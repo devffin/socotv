@@ -1,46 +1,43 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lecteur SOCOTV</title>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<style>
-body {
-  background-color: #000;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-video {
-  width: 80%;
-  max-width: 960px;
-  border-radius: 8px;
-  border: 2px solid #333;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="4; url=maintenance.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirection - SOCO TV</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: "Segoe UI", sans-serif;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      animation: fade 2s infinite;
+    }
+
+    p {
+      color: #aaa;
+      font-size: 1rem;
+    }
+
+    @keyframes fade {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
 </head>
 <body>
-  <video id="video" controls autoplay></video>
-
-  <script>
-    const video = document.getElementById('video');
-    const streamURL = 'https://live20.bozztv.com/giatv/giatv-soco23/soco23/playlist.m3u8';
-
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(streamURL);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play();
-      });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // Pour Safari
-      video.src = streamURL;
-      video.play();
-    }
-  </script>
+  <h1>Redirection en cours...</h1>
+  <p>Vous allez être redirigé vers la page de maintenance de SOCO TV.</p>
+  <p>Si la redirection ne se fait pas, <a href="maintenance.html" style="color:#00bfff;">cliquez ici</a>.</p>
 </body>
 </html>

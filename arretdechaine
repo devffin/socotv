@@ -68,7 +68,7 @@
   <img src="logo.png" alt="SOCO TV" class="logo">
   
   <h1>arrêt de la chaîne concernée... </h1>
-  <p>suite au non-respect des règles ou un temps achevé, la chaîne a arrêté de diffuser sur SOCOTV</p>
+  <p>suite au non-respect des règles ou un délai dépassé, la chaîne a arrêté de diffuser sur SOCOTV</p>
   
   <div class="loader"></div>
 </body>

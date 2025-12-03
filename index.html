@@ -28,7 +28,6 @@
     .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:var(--radius);padding:22px;backdrop-filter:blur(6px);box-shadow:0 8px 30px rgba(3,6,18,0.6)}
     .title{font-size:30px;line-height:1.02;margin:0}
     .subtitle{color:var(--muted);margin-top:8px}
-    .actions{margin-top:14px;display:flex;gap:12px}
 
     .live-panel{padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(255,59,59,0.04), rgba(255,255,255,0.02));}
     .live-badge{display:inline-flex;gap:8px;align-items:center;font-weight:700}
@@ -40,7 +39,7 @@
 
     section{margin-top:28px}
     .channels-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .card{background:var(--panel);padding:14px;border-radius:10px;display:block;text-decoration:none;border:1px solid rgba(255,255,255,0.02)}
+    .card{background:var(--panel);padding:14px;border-radius:10px;display:block;text-decoration:none;border:1px solid rgba(255,255,255,0.02);cursor:pointer}
     .card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(2,6,20,0.6)}
     .card h3{margin:0 0 6px 0}
     .small{font-size:13px;color:var(--muted)}
@@ -51,10 +50,12 @@
     @media (max-width:1000px){.hero{grid-template-columns:1fr}.channels-grid{grid-template-columns:repeat(3,1fr)}}
     @media (max-width:700px){nav{display:none}.channels-grid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:420px){.channels-grid{grid-template-columns:1fr}}
-    #playerModal{opacity:0;transition:opacity .3s ease}
-    #playerModal.show{opacity:1}
-    #playerModal .panel-anim{transform:translateY(20px);opacity:0;transition:.35s ease}
-    #playerModal.show .panel-anim{transform:translateY(0);opacity:1}
+
+    /* Modal */
+    #playerModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+    #playerModal.show{opacity:1;pointer-events:auto}
+    #playerModal iframe{width:80%;height:80%;border:none;border-radius:12px;background:#000}
+    #playerModal .closeBtn{position:absolute;top:20px;right:20px;font-size:28px;color:#fff;cursor:pointer;font-weight:bold}
   </style>
 </head>
 <body>
@@ -62,7 +63,7 @@
     <header>
       <div class="brand">
         <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit">
-          <div class="logo"><a href="index.html"><img src="logo.png" alt="SOCO TV Logo" style="width:100%;height:100%;border-radius:10px" /></a></div>
+          <div class="logo"><img src="logo.png" alt="SOCO TV Logo" style="width:100%;height:100%;border-radius:10px" /></div>
           <div>
             <div style="font-weight:800">SOCO TV 2</div>
             <div style="font-size:12px;color:var(--muted)">Version Beta</div>
@@ -94,54 +95,37 @@
             <div class="program"><h4>AIRBENZ TV</h4><p>Programme</p></div>
             <div class="program"><h4>SOCO 23</h4><p>Programme</p></div>
           </div>
-          <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-            <a style="text-decoration:none;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.02);font-weight:600" href="#contact">Signaler un bug</a>
-          </div>
         </aside>
       </div>
 
       <section id="channels">
         <h2>Les 24 chaînes</h2>
         <div class="channels-grid" style="margin-top:12px">
-          <a class="card" href="watch.html?id=echo"><h3>Canal 1</h3><div class="small">echo</div></a>
-          <a class="card" href="/c2.html"><h3>Canal 2</h3><div class="small"></div></a>
-          <a class="card" href="/c3.html"><h3>Canal 3</h3><div class="small"></div></a>
-          <a class="card" href="/c4.html"><h3>Canal 4</h3><div class="small"></div></a>
-          <a class="card" href="watch.html?id=nexttv"><h3>Canal 5</h3><div class="small">nexttv</div></a>
-          <a class="card" href="watch.html?id=AIRBENZTV"><h3>Canal 6</h3><div class="small">AIRBENZ TV</div></a>
-          <a class="card" href="/c7.html"><h3>Canal 7</h3><div class="small"></div></a>
-          <a class="card" href="/c8.html"><h3>Canal 8</h3><div class="small"></div></a>
-          <a class="card" href="/c9.html"><h3>Canal 9</h3><div class="small"></div></a>
-          <a class="card" href="/c10.html"><h3>Canal 10</h3><div class="small"></div></a>
-          <a class="card" href="/c11.html"><h3>Canal 11</h3><div class="small"></div></a>
-          <a class="card" href="/c12.html"><h3>Canal 12</h3><div class="small"></div></a>
-          <a class="card" href="/c13.html"><h3>Canal 13</h3><div class="small"></div></a>
-          <a class="card" href="/c14.html"><h3>Canal 14</h3><div class="small"></div></a>
-          <a class="card" href="/c15.html"><h3>Canal 15</h3><div class="small"></div></a>
-          <a class="card" href="/c16.html"><h3>Canal 16</h3><div class="small"></div></a>
-          <a class="card" href="/c17.html"><h3>Canal 17</h3><div class="small"></div></a>
-          <a class="card" href="/c18.html"><h3>Canal 18</h3><div class="small"></div></a>
-          <a class="card" href="/c19.html"><h3>Canal 19</h3><div class="small"></div></a>
-          <a class="card" href="/c20.html"><h3>Canal 20</h3><div class="small"></div></a>
-          <a class="card" href="/c21.html"><h3>Canal 21</h3><div class="small"></div></a>
-          <a class="card" href="/c22.html"><h3>Canal 22</h3><div class="small"></div></a>
-          <a class="card" href="watch.html?id=SOCO23"><h3>Canal 23</h3><div class="small">SOCO 23</div></a>
-          <a class="card" href="/c24.html"><h3>Canal 24</h3><div class="small"></div></a>
-        </div>
-      </section>
-
-      <section id="contact">
-        <h2>Contact & contributions</h2>
-        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px">
-          <a class="card" href="contact.html" style="flex:1;min-width:240px">
-            <h3>Nous contacter</h3>
-            <p class="small">Pour signaler un bug ou proposer un format : <strong>socotv@proton.me</strong></p>
-            <p class="small">Sinon, cliquez <strong>ici</strong>.</p>
-          </a>
-          <a class="card" href="#" style="flex:1;min-width:240px">
-            <h3>Nous suivre</h3>
-            <p class="small">Fonction non disponible actuellement.</p>
-          </a>
+          <div class="card" onclick="openModal('echo')"><h3>Canal 1</h3><div class="small">echo</div></div>
+          <div class="card"><h3>Canal 2</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 3</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 4</h3><div class="small"></div></div>
+          <div class="card" onclick="openModal('nexttv')"><h3>Canal 5</h3><div class="small">nexttv</div></div>
+          <div class="card" onclick="openModal('AIRBENZTV')"><h3>Canal 6</h3><div class="small">AIRBENZ TV</div></div>
+          <div class="card"><h3>Canal 7</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 8</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 9</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 10</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 11</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 12</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 13</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 14</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 15</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 16</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 17</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 18</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 19</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 20</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 21</h3><div class="small"></div></div>
+          <div class="card"><h3>Canal 22</h3><div class="small"></div></div>
+          <div class="card" onclick="openModal('SOCO23')"><h3>Canal 23</h3><div class="small">SOCO 23</div></div>
+          <div class="card"><h3>Canal 24</h3><div class="small"></div></div>
+          <!-- autres chaînes restent les mêmes -->
         </div>
       </section>
     </main>
@@ -156,18 +140,29 @@
     </footer>
   </div>
 
-  <script>
-    const channels = [
-      'echo','nexttv','AIRBENZTV','SOCO23'
-    ];
+  <!-- Modal -->
+  <div id="playerModal">
+    <div class="closeBtn" onclick="closeModal()">&times;</div>
+    <iframe id="playerFrame" src=""></iframe>
+  </div>
 
-    function openChannel(id){
-      window.location.href = "watch.html?id=" + encodeURIComponent(id);
+  <script>
+    const channels = ['echo','nexttv','AIRBENZTV','SOCO23'];
+
+    function openModal(id){
+      const iframe = document.getElementById('playerFrame');
+      iframe.src = 'watch.html?id=' + encodeURIComponent(id);
+      document.getElementById('playerModal').classList.add('show');
+    }
+
+    function closeModal(){
+      document.getElementById('playerModal').classList.remove('show');
+      document.getElementById('playerFrame').src = '';
     }
 
     function randomChannel(){
       const randomId = channels[Math.floor(Math.random() * channels.length)];
-      openChannel(randomId);
+      openModal(randomId);
     }
   </script>
 </body>

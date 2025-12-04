@@ -4,38 +4,50 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SOCO TV 2 • La nouvelle génération TV</title>
-  <meta name="description" content="SOCO TV 2 - 24 chaînes en streaming gratuit • Design premium • Expérience immersive" />
+  <meta name="description" content="SOCO TV 2 - 24 chaînes en streaming gratuit • Design liquid glass premium" />
   
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
       --bg: #0a0e1a;
-      --surface: rgba(20, 25, 45, 0.6);
-      --surface2: rgba(30, 35, 60, 0.4);
-      --accent: #ff4757;
-      --accent2: #ff6b7a;
+      --glass: rgba(15, 20, 40, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --accent: #ff2e63;
+      --accent-glow: #ff4778;
       --text: #e8f0ff;
-      --text-muted: #94a3c9;
-      --border: rgba(255, 255, 255, 0.08);
-      --radius: 16px;
-      --gap: 24px;
-      --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      --text-muted: #a0b4e0;
+      --iridescent: linear-gradient(135deg, #ff9eff, #9e7eff, #7ed3ff, #7effd4);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      background: linear-gradient(135deg, #0f0c29, #302b63, #0f0c29);
       background-attachment: fixed;
       color: var(--text);
       min-height: 100vh;
-      line-height: 1.6;
       overflow-x: hidden;
+      position: relative;
     }
 
-    /* Animated background particles */
+    /* Fond animé iridescent très subtil */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: var(--iridescent);
+      opacity: 0.07;
+      background-size: 300% 300%;
+      animation: iridescent 25s ease infinite;
+      z-index: -2;
+    }
+    @keyframes iridescent {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Particules flottantes */
     .bg-particles {
       position: fixed;
       inset: 0;
@@ -44,14 +56,17 @@
     }
     .particle {
       position: absolute;
-      background: var(--accent);
+      background: linear-gradient(45deg, #ff4778, #7e7eff);
       border-radius: 50%;
       opacity: 0.15;
-      animation: float 20s infinite linear;
+      filter: blur(1px);
+      animation: float 18s infinite linear;
     }
     @keyframes float {
-      0% { transform: translateY(100vh) rotate(0deg); }
-      100% { transform: translateY(-100px) rotate(360deg); }
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.15; }
+      90% { opacity: 0.15; }
+      100% { transform: translateY(-120px) rotate(360deg); opacity: 0; }
     }
 
     .container {
@@ -62,14 +77,42 @@
       z-index: 1;
     }
 
+    /* ==== Effet Liquid Glass global ==== */
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.37),
+        0 0 40px rgba(255, 71, 127, 0.15),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.03) 50%, 
+        transparent 100%);
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.5rem 0;
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      margin-bottom: var(--gap);
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
     }
 
     .brand {
@@ -79,316 +122,303 @@
       text-decoration: none;
       color: white;
     }
-
     .logo {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4);
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--accent), #ff8ba0);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(255, 46, 99, 0.5);
       overflow: hidden;
+      padding: 4px;
     }
-    .logo img { width: 100%; height: 100%; object-fit: cover; }
+    .logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; }
 
     .brand-text h1 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 700;
-      margin: 0;
+      background: linear-gradient(90deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .brand-text span {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
-      letter-spacing: 1px;
+      letter-spacing: 2px;
+      opacity: 0.9;
     }
 
-    nav {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
     nav a {
-      padding: 10px 18px;
-      border-radius: 12px;
+      padding: 12px 24px;
+      border-radius: 16px;
       text-decoration: none;
       color: var(--text-muted);
-      font-weight: 500;
-      transition: var(--transition);
-      backdrop-filter: blur(8px);
+      font-weight: 600;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
     }
     nav a:hover {
-      background: var(--surface2);
       color: white;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
     }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 50%;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: all 0.4s ease;
+      transform: translateX(-50%);
+    }
+    nav a:hover::after { width: 70%; }
 
     .cta-btn {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      background: linear-gradient(90deg, var(--accent), var(--accent-glow));
       color: white !important;
-      padding: 12px 24px !important;
-      border-radius: 14px;
+      padding: 14px 32px !important;
+      border-radius: 18px;
       font-weight: 700;
-      box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
-      transform: translateY(0);
+      box-shadow: 0 10px 30px rgba(255, 46, 99, 0.5);
+      position: relative;
+      overflow: hidden;
     }
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+    .cta-btn:hover::before { transform: translateX(100%); }
     .cta-btn:hover {
-      transform: translateY(-4px) scale(1.05) !important;
-      box-shadow: 0 15px 35px rgba(255, 71, 87, 0.6);
-    }
-
-    .pressable {
-      transition: transform 0.2s ease;
-    }
-    .pressable:active {
-      transform: scale(0.95);
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 20px 40px rgba(255, 46, 99, 0.7);
     }
 
     h2 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 2.8rem;
+      font-size: 3.2rem;
       text-align: center;
-      margin: 3rem 0 2rem;
-      background: linear-gradient(90deg, #fff, var(--accent));
+      margin: 4rem 0 3rem;
+      background: linear-gradient(90deg, #ffffff, var(--accent), #c77dff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      filter: drop-shadow(0 0 20px rgba(255, 71, 127, 0.5));
     }
 
     .channels-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: var(--gap);
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
       margin-top: 2rem;
     }
 
     .channel-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      backdrop-filter: blur(12px);
-      transition: var(--transition);
+      height: 180px;
       cursor: pointer;
       position: relative;
+      border-radius: 24px;
       overflow: hidden;
+      transform: translateY(0);
     }
-
-    .channel-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(135deg, rgba(255,71,87,0.15), transparent);
-      opacity: 0;
-      transition: var(--transition);
-      pointer-events: none;
-    }
-
     .channel-card:hover {
-      transform: translateY(-12px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      border-color: var(--accent);
+      transform: translateY(-16px) scale(1.03);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 40px rgba(255, 71, 127, 0.4);
     }
-    .channel-card:hover::before {
-      opacity: 1;
+
+    .channel-card .inner {
+      padding: 2rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background: linear-gradient(135deg, 
+        rgba(30, 40, 80, 0.7) 0%, 
+        rgba(15, 20, 50, 0.9) 100%);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(16px);
+      position: relative;
+      z-index: 2;
+      transition: all 0.5s ease;
     }
 
     .channel-card h3 {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       margin-bottom: 0.5rem;
       color: white;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
-
     .channel-id {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--accent);
-      font-weight: 600;
-      letter-spacing: 1px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
     }
 
     .live-badge {
       position: absolute;
-      top: 12px;
-      right: 12px;
+      top: 16px; right: 16px;
       background: var(--accent);
       color: white;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
       font-weight: 700;
+      box-shadow: 0 0 20px rgba(255, 46, 99, 0.7);
       animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
     }
 
     footer {
-      margin-top: 6rem;
-      padding: 2rem 0;
-      border-top: 1px solid var(--border);
+      margin-top: 8rem;
+      padding: 3rem;
       text-align: center;
       color: var(--text-muted);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      background: var(--glass);
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
     }
 
-    /* Modal amélioré */
+    /* Modal Liquid Glass */
     #playerModal {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.92);
-      backdrop-filter: blur(12px);
+      background: rgba(5, 8, 25, 0.95);
+      backdrop-filter: blur(24px);
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.5s ease;
       z-index: 9999;
     }
-    #playerModal.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    #playerModal.show { opacity: 1; pointer-events: auto; }
     #playerModal iframe {
-      width: 90%;
-      max-width: 1200px;
-      height: 80vh;
+      width: 92%;
+      max-width: 1300px;
+      height: 82vh;
       border: none;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      border-radius: 28px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.8),
+                  0 0 60px rgba(255, 71, 127, 0.4);
+      background: #000;
     }
     .closeBtn {
       position: absolute;
-      top: 30px;
-      right: 40px;
-      font-size: 40px;
-      color: white;
-      cursor: pointer;
-      width: 60px;
-      height: 60px;
-      background: rgba(255,255,255,0.1);
+      top: 40px; right: 50px;
+      width: 70px; height: 70px;
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(10px);
-      transition: var(--transition);
+      font-size: 44px;
+      color: white;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.4s ease;
     }
     .closeBtn:hover {
       background: var(--accent);
-      transform: rotate(90deg);
+      transform: rotate(90deg) scale(1.1);
+      box-shadow: 0 0 30px rgba(255, 46, 99, 0.8);
     }
 
     @media (max-width: 768px) {
-      .channels-grid { grid-template-columns: repeat(2, 1fr); }
-      h2 { font-size: 2.2rem; }
-      header { flex-direction: column; gap: 1rem; text-align: center; }
-      #playerModal iframe { height: 70vh; width: 95%; }
+      h2 { font-size: 2.4rem; }
+      .channels-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      header { flex-direction: column; gap: 1.5rem; padding: 1.5rem; }
+      #playerModal iframe { height: 70vh; width: 96%; border-radius: 20px; }
+      .closeBtn { top: 20px; right: 20px; width: 60px; height: 60px; font-size: 36px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Particules animées en fond -->
   <div class="bg-particles" id="particles"></div>
 
   <div class="container">
-    <header>
-      <a href="index.html" class="brand pressable">
+    <header class="glass">
+      <a href="index.html" class="brand">
         <div class="logo">
           <img src="logo.png" alt="SOCO TV 2">
         </div>
         <div class="brand-text">
           <h1>SOCO TV 2</h1>
-          <span>NOUVELLE GÉNÉRATION</span>
+          <span>LIQUID GLASS EDITION</span>
         </div>
       </a>
 
       <nav>
-        <a href="#home" class="pressable">Accueil</a>
-        <a href="#channels" class="pressable">Chaînes</a>
-        <a href="contact.html" class="pressable">Contact</a>
-        <a href="#" class="cta-btn pressable" onclick="randomChannel()">J'ai de la chance</a>
+        <a href="#home">Accueil</a>
+        <a href="#channels">Chaînes</a>
+        <a href="contact.html">Contact</a>
+        <a href="#" class="cta-btn" onclick="randomChannel()">J'ai de la chance</a>
       </nav>
     </header>
 
     <main>
-      <h2>Découvrez nos 24 chaînes</h2>
+      <h2>24 chaînes en direct</h2>
 
       <div class="channels-grid">
-        <div class="channel-card pressable" onclick="openModal('echo')">
+        <div class="channel-card glass" onclick="openModal('echo')">
           <div class="live-badge">LIVE</div>
-          <h3>Canal 1</h3>
-          <div class="channel-id">echo</div>
+          <div class="inner">
+            <h3>Canal 1</h3>
+            <div class="channel-id">echo</div>
+          </div>
         </div>
-        <div class="channel-card pressable">
-          <h3>Canal 2</h3>
-          <div class="channel-id">Bientôt disponible</div>
-        </div>
-        <div class="channel-card pressable">
-          <h3>Canal 3</h3>
-          <div class="channel-id">En maintenance</div>
-        </div>
-        <div class="channel-card pressable">
-          <h3>Canal 4</h3>
-          <div class="channel-id">Prochainement</div>
-        </div>
-        <div class="channel-card pressable" onclick="openModal('nexttv')">
+        <div class="channel-card glass" onclick="openModal('nexttv')">
           <div class="live-badge">LIVE</div>
-          <h3>Canal 5</h3>
-          <div class="channel-id">nexttv</div>
+          <div class="inner">
+            <h3>Canal 5</h3>
+            <div class="channel-id">nexttv</div>
+          </div>
         </div>
-        <div class="channel-card pressable" onclick="openModal('AIRBENZTV')">
+        <div class="channel-card glass" onclick="openModal('AIRBENZTV')">
           <div class="live-badge">LIVE</div>
-          <h3>Canal 6</h3>
-          <div class="channel-id">AIRBENZ TV</div>
+          <div class="inner">
+            <h3>Canal 6</h3>
+            <div class="channel-id">AIRBENZ TV</div>
+          </div>
         </div>
-        <!-- Tu peux compléter les autres cartes -->
-        <div class="channel-card pressable" onclick="openModal('SOCO23')">
+        <div class="channel-card glass" onclick="openModal('SOCO23')">
           <div class="live-badge">LIVE</div>
-          <h3>Canal 23</h3>
-          <div class="channel-id">SOCO 23</div>
+          <div class="inner">
+            <h3>Canal 23</h3>
+            <div class="channel-id">SOCO 23</div>
+          </div>
         </div>
-        <div class="channel-card pressable">
-          <h3>Canal 24</h3>
-          <div class="channel-id">À venir...</div>
-        </div>
+        <!-- Ajoute les autres cartes ici avec la même structure -->
       </div>
     </main>
 
-    <footer>
-      <p>© 2025 SOCO TV 2 • Groupe Yotvin SOCO • Version BETA 2.0</p>
-      <p>Toutes les chaînes sont diffusées en direct • Aucune publicité intrusive</p>
+    <footer class="glass">
+      <p>© 2025 SOCO TV 2 • Groupe Yotvin SOCO • Liquid Glass Beta</p>
+      <p>Toutes les chaînes en direct • Zéro pub intrusive • Expérience fluide</p>
     </footer>
   </div>
 
-  <!-- Modal Player -->
   <div id="playerModal">
-    <div class="closeBtn pressable" onclick="closeModal()">×</div>
+    <div class="closeBtn" onclick="closeModal()">×</div>
     <iframe id="playerFrame" src="" allowfullscreen></iframe>
   </div>
 
   <script>
-    // Sons
-    const clickSound = new Audio('click.mp3');
-    const hoverSound = new Audio('hover.mp3');
-    document.querySelectorAll('.pressable').forEach(el => {
-      el.addEventListener('click', () => clickSound.currentTime = 0 || clickSound.play());
-      el.addEventListener('mouseenter', () => hoverSound.currentTime = 0 || hoverSound.play());
-    });
-
-    // Particules animées
+    // Particules améliorées
     const particlesContainer = document.getElementById('particles');
-    for(let i = 0; i < 30; i++) {
+    for(let i = 0; i < 35; i++) {
       const p = document.createElement('div');
       p.classList.add('particle');
-      p.style.width = p.style.height = Math.random() * 5 + 2 + 'px';
+      p.style.width = p.style.height = Math.random() * 6 + 3 + 'px';
       p.style.left = Math.random() * 100 + '%';
       p.style.animationDelay = Math.random() * 20 + 's';
-      p.style.animationDuration = 15 + Math.random() * 20 + 's';
+      p.style.animationDuration = 15 + Math.random() * 25 + 's';
       particlesContainer.appendChild(p);
     }
 
@@ -411,7 +441,6 @@
       openModal(randomId);
     }
 
-    // Fermer le modal avec ECHAP
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeModal();
     });

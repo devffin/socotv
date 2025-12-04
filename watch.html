@@ -67,16 +67,6 @@ video {
     background: black;
 }
 
-.loader {
-    margin-top: 30px;
-    border: 6px solid rgba(255,255,255,0.2);
-    border-top: 6px solid #fff;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    animation: spin 1s linear infinite;
-}
-
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
@@ -92,13 +82,10 @@ video {
 <body>
 
 <div class="header">
-    <button onclick="history.back()">← Retour</button>
     <h1 id="channelName">Chargement…</h1>
 </div>
 
-<div id="loading" class="loader"></div>
-
-<div class="video-container" style="display:none;">
+<div class="video-container">
     <video id="player" controls autoplay></video>
 </div>
 

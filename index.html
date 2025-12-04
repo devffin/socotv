@@ -2,158 +2,419 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SOCO TV 2 — Accueil (Enhanced)</title>
-  <meta name="description" content="Page d'accueil de SOCO TV 2 améliorée avec effets et sons." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SOCO TV 2 • La nouvelle génération TV</title>
+  <meta name="description" content="SOCO TV 2 - 24 chaînes en streaming gratuit • Design premium • Expérience immersive" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
   <style>
-    :root{
-      --bg:#071027; --panel:#0b1220; --accent:#ff6b6b; --muted:#98a0b3; --glass: rgba(255,255,255,0.04);
-      --radius:12px; --maxw:1200px; --gap:18px;
-      color-scheme: dark;
+    :root {
+      --bg: #0a0e1a;
+      --surface: rgba(20, 25, 45, 0.6);
+      --surface2: rgba(30, 35, 60, 0.4);
+      --accent: #ff4757;
+      --accent2: #ff6b7a;
+      --text: #e8f0ff;
+      --text-muted: #94a3c9;
+      --border: rgba(255, 255, 255, 0.08);
+      --radius: 16px;
+      --gap: 24px;
+      --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    *{box-sizing:border-box; transition:0.25s ease}
-    html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui; background:linear-gradient(180deg,var(--bg) 0%, #0b1524 100%); color:#e6eef8;}
 
-    /* Button press animation */
-    .pressable:active{transform:scale(0.94);}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      background-attachment: fixed;
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-    /* Hover glow */
-    .glow:hover{box-shadow:0 0 15px rgba(255,107,107,0.5);}
+    /* Animated background particles */
+    .bg-particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: float 20s infinite linear;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-100px) rotate(360deg); }
+    }
 
-    a{color:inherit}
-    .container{max-width:var(--maxw);margin:0 auto;padding:28px}
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
 
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#ff9671);display:flex;align-items:center;justify-content:center;font-weight:800;color:#081324}
-    nav{display:flex;gap:14px;align-items:center}
-    nav a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:10px}
-    nav a:hover{color:#fff;background:var(--glass)}
-    .cta{background:linear-gradient(90deg,var(--accent),#ff9671);color:#081324;padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:700;cursor:pointer}
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--gap);
+    }
 
-    .hero{display:grid;grid-template-columns:1fr 340px;gap:var(--gap);align-items:start;margin-top:26px}
-    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:var(--radius);padding:22px;backdrop-filter:blur(6px);box-shadow:0 8px 30px rgba(3,6,18,0.6)}
-    .title{font-size:30px;margin:0}
-    .subtitle{color:var(--muted);margin-top:8px}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: white;
+    }
 
-    .card{background:var(--panel);padding:14px;border-radius:10px;display:block;text-decoration:none;border:1px solid rgba(255,255,255,0.02);cursor:pointer; transform:translateY(0)}
-    .card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(2,6,20,0.6)}
-    .card h3{margin:0 0 6px 0}
-    .small{font-size:13px;color:var(--muted)}
+    .logo {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4);
+      overflow: hidden;
+    }
+    .logo img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* Modal */
-    #playerModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
-    #playerModal.show{opacity:1;pointer-events:auto}
-    #playerModal iframe{width:80%;height:80%;border:none;border-radius:12px;background:#000}
-    #playerModal .closeBtn{position:absolute;top:20px;right:20px;font-size:28px;color:#fff;cursor:pointer;font-weight:bold}
+    .brand-text h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .brand-text span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    nav a {
+      padding: 10px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: var(--transition);
+      backdrop-filter: blur(8px);
+    }
+    nav a:hover {
+      background: var(--surface2);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .cta-btn {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color: white !important;
+      padding: 12px 24px !important;
+      border-radius: 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
+      transform: translateY(0);
+    }
+    .cta-btn:hover {
+      transform: translateY(-4px) scale(1.05) !important;
+      box-shadow: 0 15px 35px rgba(255, 71, 87, 0.6);
+    }
+
+    .pressable {
+      transition: transform 0.2s ease;
+    }
+    .pressable:active {
+      transform: scale(0.95);
+    }
+
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.8rem;
+      text-align: center;
+      margin: 3rem 0 2rem;
+      background: linear-gradient(90deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--gap);
+      margin-top: 2rem;
+    }
+
+    .channel-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      backdrop-filter: blur(12px);
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .channel-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(255,71,87,0.15), transparent);
+      opacity: 0;
+      transition: var(--transition);
+      pointer-events: none;
+    }
+
+    .channel-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      border-color: var(--accent);
+    }
+    .channel-card:hover::before {
+      opacity: 1;
+    }
+
+    .channel-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+
+    .channel-id {
+      font-size: 0.9rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .live-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--accent);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    footer {
+      margin-top: 6rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Modal amélioré */
+    #playerModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 9999;
+    }
+    #playerModal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #playerModal iframe {
+      width: 90%;
+      max-width: 1200px;
+      height: 80vh;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    }
+    .closeBtn {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+      width: 60px;
+      height: 60px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+    }
+    .closeBtn:hover {
+      background: var(--accent);
+      transform: rotate(90deg);
+    }
+
+    @media (max-width: 768px) {
+      .channels-grid { grid-template-columns: repeat(2, 1fr); }
+      h2 { font-size: 2.2rem; }
+      header { flex-direction: column; gap: 1rem; text-align: center; }
+      #playerModal iframe { height: 70vh; width: 95%; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Sounds -->
-  <audio id="clickSound" src="click.mp3"></audio>
-  <audio id="hoverSound" src="hover.mp3"></audio>
-  <audio id="startSound" src="decompte nexttv.mp3" autoplay></audio>
-
-  <script>
-    function playClick(){ document.getElementById('clickSound').play(); }
-    function playHover(){ document.getElementById('hoverSound').play(); }
-  </script>
+  <!-- Particules animées en fond -->
+  <div class="bg-particles" id="particles"></div>
 
   <div class="container">
     <header>
-      <div class="brand pressable" onmousedown="playClick()">
-        <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit">
-          <div class="logo glow"><img src="logo.png" alt="SOCO TV Logo" style="width:100%;height:100%;border-radius:10px" /></div>
-          <div>
-            <div style="font-weight:800">SOCO TV 2</div>
-            <div style="font-size:12px;color:var(--muted)">Version Beta</div>
-          </div>
-        </a>
-      </div>
+      <a href="index.html" class="brand pressable">
+        <div class="logo">
+          <img src="logo.png" alt="SOCO TV 2">
+        </div>
+        <div class="brand-text">
+          <h1>SOCO TV 2</h1>
+          <span>NOUVELLE GÉNÉRATION</span>
+        </div>
+      </a>
 
       <nav>
-        <a class="pressable" onmousedown="playClick()" onmouseover="playHover()" href="#home">Accueil</a>
-        <a class="pressable" onmousedown="playClick()" onmouseover="playHover()" href="#channels">Chaînes</a>
-        <a class="pressable" onmousedown="playClick()" onmouseover="playHover()" href="contact.html">Contact</a>
-        <a class="cta pressable" onmousedown="playClick()" onmouseover="playHover()" onclick="randomChannel()">J'ai de la chance</a>
+        <a href="#home" class="pressable">Accueil</a>
+        <a href="#channels" class="pressable">Chaînes</a>
+        <a href="contact.html" class="pressable">Contact</a>
+        <a href="#" class="cta-btn pressable" onclick="randomChannel()">J'ai de la chance</a>
       </nav>
     </header>
 
     <main>
-      <section id="channels">
-        <h2>Les 24 chaînes</h2>
-        <div class="channels-grid" style="margin-top:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <h2>Découvrez nos 24 chaînes</h2>
 
-          <div class="card pressable glow" onclick="playClick(); openModal('echo')"><h3>Canal 1</h3><div class="small">echo</div></div>
-          <div class="card pressable glow" onclick="playClick()"><h3>Canal 2</h3><div class="small"></div></div>
-          <div class="card pressable glow" onclick="playClick()"><h3>Canal 3</h3><div class="small"></div></div>
-          <div class="card pressable glow" onclick="playClick()"><h3>Canal 4</h3><div class="small"></div></div>
-          <div class="card pressable glow" onclick="playClick(); openModal('nexttv')"><h3>Canal 5</h3><div class="small">nexttv</div></div>
-          <div class="card pressable glow" onclick="playClick(); openModal('AIRBENZTV')"><h3>Canal 6</h3><div class="small">AIRBENZ TV</div></div>
-
-          <div class="card pressable glow"><h3>Canal 7</h3></div>
-          <div class="card pressable glow"><h3>Canal 8</h3></div>
-          <div class="card pressable glow"><h3>Canal 9</h3></div>
-          <div class="card pressable glow"><h3>Canal 10</h3></div>
-
-          <div class="card pressable glow"><h3>Canal 11</h3></div>
-          <div class="card pressable glow"><h3>Canal 12</h3></div>
-          <div class="card pressable glow"><h3>Canal 13</h3></div>
-          <div class="card pressable glow"><h3>Canal 14</h3></div>
-
-          <div class="card pressable glow"><h3>Canal 15</h3></div>
-          <div class="card pressable glow"><h3>Canal 16</h3></div>
-          <div class="card pressable glow"><h3>Canal 17</h3></div>
-          <div class="card pressable glow"><h3>Canal 18</h3></div>
-
-          <div class="card pressable glow"><h3>Canal 19</h3></div>
-          <div class="card pressable glow"><h3>Canal 20</h3></div>
-          <div class="card pressable glow"><h3>Canal 21</h3></div>
-          <div class="card pressable glow"><h3>Canal 22</h3></div>
-
-          <div class="card pressable glow" onclick="playClick(); openModal('SOCO23')"><h3>Canal 23</h3><div class="small">SOCO 23</div></div>
-          <div class="card pressable glow"><h3>Canal 24</h3></div>
-
+      <div class="channels-grid">
+        <div class="channel-card pressable" onclick="openModal('echo')">
+          <div class="live-badge">LIVE</div>
+          <h3>Canal 1</h3>
+          <div class="channel-id">echo</div>
         </div>
-      </section>
+        <div class="channel-card pressable">
+          <h3>Canal 2</h3>
+          <div class="channel-id">Bientôt disponible</div>
+        </div>
+        <div class="channel-card pressable">
+          <h3>Canal 3</h3>
+          <div class="channel-id">En maintenance</div>
+        </div>
+        <div class="channel-card pressable">
+          <h3>Canal 4</h3>
+          <div class="channel-id">Prochainement</div>
+        </div>
+        <div class="channel-card pressable" onclick="openModal('nexttv')">
+          <div class="live-badge">LIVE</div>
+          <h3>Canal 5</h3>
+          <div class="channel-id">nexttv</div>
+        </div>
+        <div class="channel-card pressable" onclick="openModal('AIRBENZTV')">
+          <div class="live-badge">LIVE</div>
+          <h3>Canal 6</h3>
+          <div class="channel-id">AIRBENZ TV</div>
+        </div>
+        <!-- Tu peux compléter les autres cartes -->
+        <div class="channel-card pressable" onclick="openModal('SOCO23')">
+          <div class="live-badge">LIVE</div>
+          <h3>Canal 23</h3>
+          <div class="channel-id">SOCO 23</div>
+        </div>
+        <div class="channel-card pressable">
+          <h3>Canal 24</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+      </div>
     </main>
 
-    <footer style="margin-top:36px;border-top:1px solid rgba(255,255,255,0.02);padding-top:18px;color:var(--muted);display:flex;justify-content:space-between;align-items:center">
-      <div>© SOCO TV 2 • <span class="muted">Groupe Yotvin SOCO</span></div>
-      <div style="display:flex;gap:12px;align-items:center">
-        <div class="muted">Version BETA • 1.0</div>
-        <div class="muted">—</div>
-        <div class="muted">Règles</div>
-      </div>
+    <footer>
+      <p>© 2025 SOCO TV 2 • Groupe Yotvin SOCO • Version BETA 2.0</p>
+      <p>Toutes les chaînes sont diffusées en direct • Aucune publicité intrusive</p>
     </footer>
   </div>
 
+  <!-- Modal Player -->
   <div id="playerModal">
-    <div class="closeBtn pressable" onclick="playClick(); closeModal()">&times;</div>
-    <iframe id="playerFrame" src=""></iframe>
+    <div class="closeBtn pressable" onclick="closeModal()">×</div>
+    <iframe id="playerFrame" src="" allowfullscreen></iframe>
   </div>
 
   <script>
-    const channels = ['echo','nexttv','AIRBENZTV','SOCO23'];
+    // Sons
+    const clickSound = new Audio('click.mp3');
+    const hoverSound = new Audio('hover.mp3');
+    document.querySelectorAll('.pressable').forEach(el => {
+      el.addEventListener('click', () => clickSound.currentTime = 0 || clickSound.play());
+      el.addEventListener('mouseenter', () => hoverSound.currentTime = 0 || hoverSound.play());
+    });
 
-    function openModal(id){
-      const iframe = document.getElementById('playerFrame');
-      iframe.src = 'watch.html?id=' + encodeURIComponent(id);
-      document.getElementById('playerModal').classList.add('show');
+    // Particules animées
+    const particlesContainer = document.getElementById('particles');
+    for(let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      p.style.width = p.style.height = Math.random() * 5 + 2 + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDelay = Math.random() * 20 + 's';
+      p.style.animationDuration = 15 + Math.random() * 20 + 's';
+      particlesContainer.appendChild(p);
     }
 
-    function closeModal(){
+    const channels = ['echo', 'nexttv', 'AIRBENZTV', 'SOCO23'];
+
+    function openModal(id) {
+      document.getElementById('playerFrame').src = `watch.html?id=${id}`;
+      document.getElementById('playerModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
       document.getElementById('playerModal').classList.remove('show');
       document.getElementById('playerFrame').src = '';
+      document.body.style.overflow = 'auto';
     }
 
-    function randomChannel(){
-      playClick();
+    function randomChannel() {
       const randomId = channels[Math.floor(Math.random() * channels.length)];
       openModal(randomId);
     }
+
+    // Fermer le modal avec ECHAP
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
   </script>
 </body>
 </html>
-

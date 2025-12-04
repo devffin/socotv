@@ -3,23 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ASTROCO TV • Liquid Glass Experience</title>
-  <meta name="description" content="ASTROCO TV - 24 chaînes en streaming • Liquid Glass Design • Édition 2026" />
+  <title>SOCO TV • Liquid Glass Edition</title>
+  <meta name="description" content="SOCO TV - 24 chaînes • Liquid Glass • Expérience 2026" />
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
       --bg: #0a001f;
-      --glass: rgba(10, 15, 40, 0.42);
-      --glass-off: rgba(20, 20, 45, 0.25);
-      --border: rgba(130, 100, 255, 0.15);
+      --glass: rgba(15, 20, 50, 0.38);
+      --glass-hover: rgba(30, 40, 90, 0.55);
+      --border: rgba(180, 140, 255, 0.18);
       --accent: #ff2ebf;
-      --accent2: #7e5aff;
-      --glow: #c05aff;
+      --accent2: #8b5aff;
       --text: #f0f4ff;
-      --text-dim: #8899cc;
-      --iridescent: linear-gradient(120deg, #ff6bfc, #9e7eff, #5affff, #6bff9e, #fffa6b);
+      --text-dim: #99aacc;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,192 +30,87 @@
       position: relative;
     }
 
-    /* Fond cosmique liquide animé */
+    /* Fond liquide cosmique */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background: var(--iridescent);
+      background: linear-gradient(120deg, #ff6bfc15, #8b5aff15, #5affff10, #6bff9e10);
       background-size: 400% 400%;
-      opacity: 0.09;
-      animation: cosmicFlow 30s ease infinite;
+      animation: flow 32s ease infinite;
       z-index: -2;
     }
+    @keyframes flow { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
     body::after {
       content: '';
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 30% 70%, rgba(130, 80, 255, 0.15), transparent 50%),
-                  radial-gradient(circle at 70% 30%, rgba(255, 50, 200, 0.15), transparent 50%);
+      background: radial-gradient(circle at 20% 80%, rgba(255,50,200,0.12), transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(139,90,255,0.12), transparent 50%);
       z-index: -1;
-      animation: pulseGlow 12s ease-in-out infinite alternate;
+      animation: pulse 15s ease-in-out infinite alternate;
     }
-    @keyframes cosmicFlow { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-    @keyframes pulseGlow { 0%{opacity:0.08} 100%{opacity:0.18} }
+    @keyframes pulse { from {opacity:0.08} to {opacity:0.2} }
 
-    /* Particules néon flottantes */
-    .bg-particles { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--accent), transparent);
-      opacity: 0.2;
-      filter: blur(2px);
-      animation: float 25s infinite linear;
-    }
+    .container { max-width: 1520px; margin: 0 auto; padding: 2rem; position: relative; z-index: 2; }
 
-    /* Effet Liquid Glass ultime */
-    .glass {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      box-shadow: 
-        0 20px 60px rgba(0,0,0,0.5),
-        0 0 60px rgba(130, 80, 255, 0.15),
-        inset 0 0 40px rgba(255, 255, 255, 0.06);
+    /* Liquid Glass Cards */
+    .channel-card {
+      height: 220px;
+      border-radius: 34px;
       position: relative;
       overflow: hidden;
-      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      cursor: default;
+      transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.4px solid var(--border);
+      background: var(--glass);
+      box-shadow: 
+        0 20px 50px rgba(0,0,0,0.4),
+        inset 0 0 40px rgba(255,255,255,0.06);
     }
-    .glass::before {
+
+    /* Chaînes disponibles → cliquables */
+    .channel-card.live {
+      cursor: pointer;
+    }
+    .channel-card.live:hover {
+      transform: translateY(-20px) scale(1.05);
+      background: var(--glass-hover);
+      border-color: var(--accent);
+      box-shadow: 
+        0 40px 100px rgba(0,0,0,0.6),
+        0 0 80px rgba(255,46,191,0.4);
+    }
+    .channel-card.live::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%);
-      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255,46,191,0.25), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.6s ease;
     }
-    .glass:hover {
-      transform: translateY(-12px);
-      box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 80px rgba(130, 80, 255, 0.3);
-    }
+    .channel-card.live:hover::before { opacity: 1; }
 
-    .container { max-width: 1480px; margin: 0 auto; padding: 2rem; position: relative; z-index: 2; }
-
-    header {
-      padding: 1.8rem 2.5rem;
-      margin-bottom: 4rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      class: glass;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      text-decoration: none;
-      color: white;
-    }
-    .logo {
-      width: 76px; height: 76px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 24px;
-      padding: 4px;
-      box-shadow: 0 0 50px rgba(255, 46, 191, 0.6);
-    }
-    .logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
-
-    .brand-text h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2.6rem;
-      font-weight: 700;
-      background: linear-gradient(90deg, #ffffff, #ffa1ff, var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .brand-text span {
-      font-size: 1rem;
-      color: #c0c8ff;
-      letter-spacing: 3px;
-      font-weight: 500;
-    }
-
-    nav a {
-      padding: 14px 28px;
-      border-radius: 20px;
-      color: var(--text-dim);
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    nav a:hover {
-      color: white;
-      background: rgba(130, 80, 255, 0.2);
-      transform: translateY(-4px);
-    }
-
-    .cta-btn {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      padding: 16px 36px !important;
-      border-radius: 24px;
-      font-weight: 700;
-      color: white;
-      box-shadow: 0 0 50px rgba(255, 46, 191, 0.6);
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-btn:hover {
-      transform: translateY(-8px) scale(1.08);
-      box-shadow: 0 0 80px rgba(255, 46, 191, 0.9);
-    }
-
-    h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 4rem;
-      text-align: center;
-      margin: 4rem 0 3rem;
-      background: linear-gradient(90deg, #fff, #ff9eff, #9e7eff, #7ef3ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 30px rgba(130, 80, 255, 0.5));
-    }
-
-    .channels-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 32px;
-      margin: 3rem 0;
-    }
-
-    .channel-card {
-      height: 200px;
-      border-radius: 32px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .channel-card.off {
-      opacity: 0.55;
-      cursor: not-allowed;
-      filter: grayscale(60%);
-    }
     .channel-card .inner {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
       padding: 2rem;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      background: linear-gradient(135deg, rgba(20,30,80,0.8), rgba(10,10,40,0.95));
-      backdrop-filter: blur(16px);
-      transition: all 0.6s ease;
-    }
-    .channel-card:hover:not(.off) .inner {
-      background: linear-gradient(135deg, rgba(130,80,255,0.4), rgba(255,50,200,0.4));
-      transform: translateY(-10px);
+      background: linear-gradient(0deg, rgba(10,10,40,0.95) 0%, transparent 100%);
+      backdrop-filter: blur(10px);
     }
 
     .channel-card h3 {
-      font-size: 1.6rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.7rem;
       color: white;
-      text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      margin-bottom: 0.4rem;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.7);
     }
     .channel-id {
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 700;
       letter-spacing: 2px;
       background: linear-gradient(90deg, var(--accent), var(--accent2));
@@ -225,42 +118,98 @@
       -webkit-text-fill-color: transparent;
     }
     .status {
-      font-size: 0.85rem;
-      margin-top: 6px;
-      color: #aaa;
-      font-weight: 500;
+      font-size: 0.9rem;
+      color: #bbc8ff;
+      margin-top: 8px;
+      opacity: 0.8;
     }
 
     .live-badge {
       position: absolute;
-      top: 18px; right: 18px;
+      top: 20px; right: 20px;
       background: var(--accent);
       color: white;
-      padding: 8px 16px;
+      padding: 8px 18px;
       border-radius: 30px;
       font-weight: 800;
-      font-size: 0.8rem;
-      box-shadow: 0 0 30px rgba(255, 46, 191, 0.8);
-      animation: pulse 2s infinite;
+      font-size: 0.85rem;
+      box-shadow: 0 0 40px rgba(255,46,191,0.8);
+      animation: glowPulse 2.5s infinite;
     }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+    @keyframes glowPulse { 0%,100%{box-shadow:0 0 40px rgba(255,46,191,0.8)} 50%{box-shadow:0 0 60px rgba(255,46,191,1)} }
+
+    /* Header & autres styles (inchangés mais améliorés) */
+    header {
+      padding: 2rem 3rem;
+      margin-bottom: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--glass);
+      border: 1.4px solid var(--border);
+      border-radius: 36px;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      width: 80px; height: 80px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 26px;
+      padding: 5px;
+      box-shadow: 0 0 60px rgba(255,46,191,0.7);
+    }
+    .logo img { border-radius: 20px; }
+
+    .brand-text h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ffffff, #ff9eff, #bb88ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-text span {
+      font-size: 1.1rem;
+      color: #ccd9ff;
+      letter-spacing: 4px;
+    }
+
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 4.2rem;
+      text-align: center;
+      margin: 4rem 0 3rem;
+      background: linear-gradient(90deg, #fff, #ffa1ff, #bb88ff, #88e8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 40px rgba(187,136,255,0.5));
+    }
+
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 36px;
+      margin: 3rem 0;
+    }
 
     footer {
       margin-top: 10rem;
-      padding: 3rem;
+      padding: 3.5rem;
       text-align: center;
       background: var(--glass);
-      border-radius: 32px;
-      border: 1px solid var(--border);
+      border-radius: 36px;
+      border: 1.4px solid var(--border);
       backdrop-filter: blur(20px);
       color: var(--text-dim);
+      font-size: 1rem;
     }
 
+    /* Modal */
     #playerModal {
       position: fixed;
       inset: 0;
-      background: rgba(5,0,30,0.96);
-      backdrop-filter: blur(30px);
+      background: rgba(5,0,35,0.97);
+      backdrop-filter: blur(32px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -274,78 +223,19 @@
       width: 94%;
       max-width: 1400px;
       height: 84vh;
-      border-radius: 36px;
-      box-shadow: 0 40px 120px rgba(0,0,0,0.9), 0 0 100px rgba(130,80,255,0.5);
+      border-radius: 40px;
+      box-shadow: 0 50px 140px rgba(0,0,0,0.9), 0 0 120px rgba(255,46,191,0.4);
     }
     .closeBtn {
       position: absolute;
-      top: 40px; right: 60px;
-      width: 80px; height: 80px;
+      top: 50px; right: 70px;
+      width: 84px; height: 84px;
       background: rgba(255,255,255,0.12);
       border-radius: 50%;
-      font-size: 50px;
+      font-size: 56px;
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.15);
-      transition: 0.5s;
-    }
-    .closeBtn:hover {
-      background: var(--accent);
-      transform: rotate(180deg) scale(1.2);
-      box-shadow: 0 0 60px var(--accent);
-    }
-
-    @media (max-width: 768px) {
-      h2 { font-size: 2.8rem; }
-      .channels-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-      header { flex-direction: column; gap: 2rem; padding: 1.5rem; }
-      .brand-text h1 { font-size: 2.2rem; }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="bg-particles" id="particles"></div>
-
-  <div class="container">
-    <header class="glass">
-      <a href="#" class="brand">
-        <div class="logo"><img src="logo.png" alt="ASTROCO"></div>
-        <div class="brand-text">
-          <h1>ASTROCO</h1>
-          <span>LIQUID GLASS • 2026</span>
-        </div>
-      </a>
-      <nav>
-        <a href="#">Accueil</a>
-        <a href="#channels">Chaînes</a>
-        <a href="#">Contact</a>
-        <a href="#" class="cta-btn" onclick="randomChannel()">Aléatoire</a>
-      </nav>
-    </header>
-
-    <h2>24 Chaînes Live & Futures</h2>
-
-    <div class="channels-grid">
-      <!-- Les 24 chaînes -->
-      <div class="channel-card glass" onclick="openModal('echo')"><div class="live-badge">LIVE</div><div class="inner"><h3>Astro 01</h3><div class="channel-id">echo</div></div></div>
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 02</h3><div class="channel-id">locked</div><div class="status">Bientôt disponible</div></div></div>
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 03</h3><div class="channel-id">coming</div><div class="status">En développement</div></div></div>
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 04</h3><div class="channel-id">soon</div><div class="status">Prochainement</div></div></div>
-      
-      <div class="channel-card glass" onclick="openModal('nexttv')"><div class="live-badge">LIVE</div><div class="inner"><h3>Astro 05</h3><div class="channel-id">nexttv</div></div></div>
-      <div class="channel-card glass" onclick="openModal('AIRBENZTV')"><div class="live-badge">LIVE</div><div class="inner"><h3>Astro 06</h3><div class="channel-id">AIRBENZ TV</div></div></div>
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 07</h3><div class="channel-id">secret</div><div class="status">Surprise</div></div></div>
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 08</h3><div class="channel-id">hidden</div><div class="status">À venir</div></div></div>
-      
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 09</h3><div class="channel-id">future</div><div class="status">2026</div></div></div>
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 10</h3><div class="channel-id">ultra</div><div class="status">Ultra HD</div></div></div>
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 11</h3><div class="channel-id">vip</div><div class="status">VIP Only</div></div></div>
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 12</h3><div class="channel-id">premium</div><div class="status">Premium</div></div></div>
-      
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 13</h3><div class="channel-id">luna</div><div class="status">Lunar Channel</div></div></div>
-      <div class="channel-card glass off"><div class="inner"><h3>Astro 14</h3><div class="channel-id">nebula</div><div class="status">Nebula TV</div></div></div>
-      <div class="channel
+      backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(255,

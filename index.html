@@ -3,239 +3,494 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SOCO TV • Liquid Glass Edition</title>
-  <meta name="description" content="SOCO TV - 24 chaînes • Liquid Glass • Expérience 2026" />
+  <title>SOCO TV 2 • La nouvelle génération TV</title>
+  <meta name="description" content="SOCO TV 2 - 24 chaînes en streaming gratuit • Design premium • Expérience immersive" />
   
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --bg: #0a001f;
-      --glass: rgba(15, 20, 50, 0.38);
-      --glass-hover: rgba(30, 40, 90, 0.55);
-      --border: rgba(180, 140, 255, 0.18);
-      --accent: #ff2ebf;
-      --accent2: #8b5aff;
-      --text: #f0f4ff;
-      --text-dim: #99aacc;
+      --bg: #0a0e1a;
+      --surface: rgba(20, 25, 45, 0.6);
+      --surface2: rgba(30, 35, 60, 0.4);
+      --accent: #ff4757;
+      --accent2: #ff6b7a;
+      --text: #e8f0ff;
+      --text-muted: #94a3c9;
+      --border: rgba(255, 255, 255, 0.08);
+      --radius: 16px;
+      --gap: 24px;
+      --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Inter', sans-serif;
-      background: #0a001f;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      background-attachment: fixed;
       color: var(--text);
       min-height: 100vh;
+      line-height: 1.6;
       overflow-x: hidden;
-      position: relative;
     }
 
-    /* Fond liquide cosmique */
-    body::before {
-      content: '';
+    /* Animated background particles */
+    .bg-particles {
       position: fixed;
       inset: 0;
-      background: linear-gradient(120deg, #ff6bfc15, #8b5aff15, #5affff10, #6bff9e10);
-      background-size: 400% 400%;
-      animation: flow 32s ease infinite;
-      z-index: -2;
+      pointer-events: none;
+      z-index: 0;
     }
-    @keyframes flow { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 20% 80%, rgba(255,50,200,0.12), transparent 50%),
-                  radial-gradient(circle at 80% 20%, rgba(139,90,255,0.12), transparent 50%);
-      z-index: -1;
-      animation: pulse 15s ease-in-out infinite alternate;
-    }
-    @keyframes pulse { from {opacity:0.08} to {opacity:0.2} }
-
-    .container { max-width: 1520px; margin: 0 auto; padding: 2rem; position: relative; z-index: 2; }
-
-    /* Liquid Glass Cards */
-    .channel-card {
-      height: 220px;
-      border-radius: 34px;
-      position: relative;
-      overflow: hidden;
-      cursor: default;
-      transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1.4px solid var(--border);
-      background: var(--glass);
-      box-shadow: 
-        0 20px 50px rgba(0,0,0,0.4),
-        inset 0 0 40px rgba(255,255,255,0.06);
-    }
-
-    /* Chaînes disponibles → cliquables */
-    .channel-card.live {
-      cursor: pointer;
-    }
-    .channel-card.live:hover {
-      transform: translateY(-20px) scale(1.05);
-      background: var(--glass-hover);
-      border-color: var(--accent);
-      box-shadow: 
-        0 40px 100px rgba(0,0,0,0.6),
-        0 0 80px rgba(255,46,191,0.4);
-    }
-    .channel-card.live::before {
-      content: '';
+    .particle {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,46,191,0.25), transparent 60%);
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
-    .channel-card.live:hover::before { opacity: 1; }
-
-    .channel-card .inner {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 2rem;
-      background: linear-gradient(0deg, rgba(10,10,40,0.95) 0%, transparent 100%);
-      backdrop-filter: blur(10px);
-    }
-
-    .channel-card h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.7rem;
-      color: white;
-      margin-bottom: 0.4rem;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.7);
-    }
-    .channel-id {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .status {
-      font-size: 0.9rem;
-      color: #bbc8ff;
-      margin-top: 8px;
-      opacity: 0.8;
-    }
-
-    .live-badge {
-      position: absolute;
-      top: 20px; right: 20px;
       background: var(--accent);
-      color: white;
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-weight: 800;
-      font-size: 0.85rem;
-      box-shadow: 0 0 40px rgba(255,46,191,0.8);
-      animation: glowPulse 2.5s infinite;
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: float 20s infinite linear;
     }
-    @keyframes glowPulse { 0%,100%{box-shadow:0 0 40px rgba(255,46,191,0.8)} 50%{box-shadow:0 0 60px rgba(255,46,191,1)} }
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-100px) rotate(360deg); }
+    }
 
-    /* Header & autres styles (inchangés mais améliorés) */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
     header {
-      padding: 2rem 3rem;
-      margin-bottom: 4rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--glass);
-      border: 1.4px solid var(--border);
-      border-radius: 36px;
-      backdrop-filter: blur(24px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      padding: 1.5rem 0;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--gap);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: white;
     }
 
     .logo {
-      width: 80px; height: 80px;
+      width: 60px;
+      height: 60px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 26px;
-      padding: 5px;
-      box-shadow: 0 0 60px rgba(255,46,191,0.7);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4);
+      overflow: hidden;
     }
-    .logo img { border-radius: 20px; }
+    .logo img { width: 100%; height: 100%; object-fit: cover; }
 
     .brand-text h1 {
-      font-size: 2.8rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8rem;
       font-weight: 700;
-      background: linear-gradient(90deg, #ffffff, #ff9eff, #bb88ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      margin: 0;
     }
     .brand-text span {
-      font-size: 1.1rem;
-      color: #ccd9ff;
-      letter-spacing: 4px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    nav a {
+      padding: 10px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: var(--transition);
+      backdrop-filter: blur(8px);
+    }
+    nav a:hover {
+      background: var(--surface2);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .cta-btn {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color: white !important;
+      padding: 12px 24px !important;
+      border-radius: 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
+      transform: translateY(0);
+    }
+    .cta-btn:hover {
+      transform: translateY(-4px) scale(1.05) !important;
+      box-shadow: 0 15px 35px rgba(255, 71, 87, 0.6);
+    }
+
+    .pressable {
+      transition: transform 0.2s ease;
+    }
+    .pressable:active {
+      transform: scale(0.95);
     }
 
     h2 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 4.2rem;
+      font-size: 2.8rem;
       text-align: center;
-      margin: 4rem 0 3rem;
-      background: linear-gradient(90deg, #fff, #ffa1ff, #bb88ff, #88e8ff);
+      margin: 3rem 0 2rem;
+      background: linear-gradient(90deg, #fff, var(--accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 40px rgba(187,136,255,0.5));
+      background-clip: text;
     }
 
     .channels-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 36px;
-      margin: 3rem 0;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--gap);
+      margin-top: 2rem;
+    }
+
+    .channel-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      backdrop-filter: blur(12px);
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .channel-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(255,71,87,0.15), transparent);
+      opacity: 0;
+      transition: var(--transition);
+      pointer-events: none;
+    }
+
+    .channel-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      border-color: var(--accent);
+    }
+    .channel-card:hover::before {
+      opacity: 1;
+    }
+
+    .channel-card.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .channel-card.disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .channel-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+
+    .channel-id {
+      font-size: 0.9rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .channel-card.disabled .channel-id {
+      color: var(--text-muted);
+    }
+
+    .live-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--accent);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
     }
 
     footer {
-      margin-top: 10rem;
-      padding: 3.5rem;
+      margin-top: 6rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
       text-align: center;
-      background: var(--glass);
-      border-radius: 36px;
-      border: 1.4px solid var(--border);
-      backdrop-filter: blur(20px);
-      color: var(--text-dim);
-      font-size: 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
     }
 
-    /* Modal */
+    /* Modal amélioré */
     #playerModal {
       position: fixed;
       inset: 0;
-      background: rgba(5,0,35,0.97);
-      backdrop-filter: blur(32px);
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
       pointer-events: none;
-      transition: 0.6s ease;
+      transition: opacity 0.4s ease;
       z-index: 9999;
     }
-    #playerModal.show { opacity: 1; pointer-events: auto; }
+    #playerModal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
     #playerModal iframe {
-      width: 94%;
-      max-width: 1400px;
-      height: 84vh;
-      border-radius: 40px;
-      box-shadow: 0 50px 140px rgba(0,0,0,0.9), 0 0 120px rgba(255,46,191,0.4);
+      width: 90%;
+      max-width: 1200px;
+      height: 80vh;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
     }
     .closeBtn {
       position: absolute;
-      top: 50px; right: 70px;
-      width: 84px; height: 84px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 50%;
-      font-size: 56px;
+      top: 30px;
+      right: 40px;
+      font-size: 40px;
       color: white;
+      cursor: pointer;
+      width: 60px;
+      height: 60px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(14px);
-      border: 1.5px solid rgba(255,
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+    }
+    .closeBtn:hover {
+      background: var(--accent);
+      transform: rotate(90deg);
+    }
+
+    @media (max-width: 768px) {
+      .channels-grid { grid-template-columns: repeat(2, 1fr); }
+      h2 { font-size: 2.2rem; }
+      header { flex-direction: column; gap: 1rem; text-align: center; }
+      #playerModal iframe { height: 70vh; width: 95%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particules animées en fond -->
+  <div class="bg-particles" id="particles"></div>
+
+  <div class="container">
+    <header>
+      <a href="index.html" class="brand pressable">
+        <div class="logo">
+          <img src="logo.png" alt="SOCO TV 2">
+        </div>
+        <div class="brand-text">
+          <h1>SOCO TV 2</h1>
+          <span>NOUVELLE GÉNÉRATION</span>
+        </div>
+      </a>
+
+      <nav>
+        <a href="#home" class="pressable">Accueil</a>
+        <a href="#channels" class="pressable">Chaînes</a>
+        <a href="contact.html" class="pressable">Contact</a>
+        <a href="#" class="cta-btn pressable" onclick="randomChannel(); return false;">J'ai de la chance</a>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Découvrez nos 24 chaînes</h2>
+
+      <div class="channels-grid" id="channelsGrid">
+        <div class="channel-card pressable" onclick="openModal('echo')">
+          <div class="live-badge">LIVE</div>
+          <h3>Canal 1</h3>
+          <div class="channel-id">echo</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 2</h3>
+          <div class="channel-id">Bientôt disponible</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 3</h3>
+          <div class="channel-id">En maintenance</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 4</h3>
+          <div class="channel-id">Prochainement</div>
+        </div>
+        <div class="channel-card pressable" onclick="openModal('nexttv')">
+          <div class="live-badge">LIVE</div>
+          <h3>Canal 5</h3>
+          <div class="channel-id">nexttv</div>
+        </div>
+        <div class="channel-card pressable" onclick="openModal('AIRBENZTV')">
+          <div class="live-badge">LIVE</div>
+          <h3>Canal 6</h3>
+          <div class="channel-id">AIRBENZ TV</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 7</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 8</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 9</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 10</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 11</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 12</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 13</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 14</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 15</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 16</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 17</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 18</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 19</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 20</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 21</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 22</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+        <div class="channel-card pressable" onclick="openModal('SOCO23')">
+          <div class="live-badge">LIVE</div>
+          <h3>Canal 23</h3>
+          <div class="channel-id">SOCO 23</div>
+        </div>
+        <div class="channel-card pressable disabled">
+          <h3>Canal 24</h3>
+          <div class="channel-id">À venir...</div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2025 SOCO TV 2 • Groupe Yotvin SOCO • Version BETA 2.0</p>
+      <p>Toutes les chaînes sont diffusées en direct • Aucune publicité intrusive</p>
+    </footer>
+  </div>
+
+  <!-- Modal Player -->
+  <div id="playerModal">
+    <div class="closeBtn pressable" onclick="closeModal()">×</div>
+    <iframe id="playerFrame" src="" allowfullscreen></iframe>
+  </div>
+
+  <script>
+    // Particules animées
+    const particlesContainer = document.getElementById('particles');
+    for(let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      p.style.width = p.style.height = Math.random() * 5 + 2 + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDelay = Math.random() * 20 + 's';
+      p.style.animationDuration = 15 + Math.random() * 20 + 's';
+      particlesContainer.appendChild(p);
+    }
+
+    // Liste des chaînes disponibles
+    const channels = ['echo', 'nexttv', 'AIRBENZTV', 'SOCO23'];
+
+    function openModal(id) {
+      document.getElementById('playerFrame').src = `watch.html?id=${id}`;
+      document.getElementById('playerModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('playerModal').classList.remove('show');
+      document.getElementById('playerFrame').src = '';
+      document.body.style.overflow = 'auto';
+    }
+
+    function randomChannel() {
+      const randomId = channels[Math.floor(Math.random() * channels.length)];
+      openModal(randomId);
+    }
+
+    // Fermer le modal avec ECHAP
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Fermer le modal en cliquant à l'extérieur
+    document.getElementById('playerModal').addEventListener('click', e => {
+      if (e.target.id === 'playerModal') {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>

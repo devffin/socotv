@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Lecture - SOCO TV</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<style>
+body {
+    background: #111;
+    color: #fff;
+    font-family: Arial;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+}
+h1 {
+    margin-top: 20px;
+}
+video {
+    width: 90%;
+    max-width: 900px;
+    margin-top: 20px;
+    border-radius: 10px;
+    background: black;
+}
+</style>
+</head>
+<body>
+
+<h1 id="channelName"></h1>
+<video id="player" controls autoplay></video>
+
+<script>
+const channels = {
+    "echo": {
+        name: "echo",
+        url: "https://live20.bozztv.com/giatv/giatv-echo/echo/playlist.m3u8"
+    },
+    "AIRBENZTV": {
+        name: "AIRBENZTV",
+        url: "https://live20.bozztv.com/giatv/giatv-AIRBENZTV/AIRBENZTV/playlist.m3u8"
+    },
+    "nexttv": {
+        name: "nexttv",
+        url: "https://live20.bozztv.com/giatv/giatv-4/4/playlist.m3u8"
+    },
+    "SOCO23": {
+        name: "SOCO 23",
+        url: "https://live20.bozztv.com/giatv/giatv-soco23/soco23/playlist.m3u8"
+    }
+};
+
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
+
+if (!channels[id]) {
+    document.body.innerHTML = "<h1>Chaîne inconnue</h1>";
+} else {
+    document.getElementById("channelName").innerText = channels[id].name;
+    const streamUrl = channels[id].url;
+
+    const video = document.getElementById("player");
+
+    if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(streamUrl);
+        hls.attachMedia(video);
+    } else {
+        video.src = streamUrl;
+    }
+}
+</script>
+
+</body>
+</html>

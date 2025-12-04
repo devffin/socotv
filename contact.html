@@ -2,399 +2,194 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SOCO TV 2 • La nouvelle génération TV</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — SOCO TV</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #f5f8e8;
-      --surface: rgba(255, 255, 255, 0.4);
-      --surface2: rgba(255, 255, 255, 0.6);
-      --accent: #ff4757;
-      --accent2: #ff6b7a;
-      --text: #1a1a1a;
-      --text-muted: #4a5568;
-      --border: rgba(0, 0, 0, 0.08);
-      --radius: 16px;
-      --gap: 24px;
-      --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    :root{
+      --bg: linear-gradient(180deg,#071021 0%,#0d1622 100%);
+      --card:#0f1720aa;
+      --glass: rgba(255,255,255,0.04);
+      --accent:#6ee7b7;
+      --muted: #9aa6b2;
+      --radius: 14px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter,system-ui,Arial,Helvetica,sans-serif;
+      background:var(--bg);
+      color:#e6f0f1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:30px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #fffef5, #f5f8e8, #e8f5e0, #d4ecd4);
-      background-attachment: fixed;
-      color: #1a1a1a;
-      min-height: 100vh;
-      line-height: 1.6;
-      overflow-x: hidden;
+    .wrapper{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
     }
 
-    /* Effet Liquid Glass */
-    .liquid-glass {
-      position: relative;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(25px) saturate(180%) contrast(110%);
-      -webkit-backdrop-filter: blur(25px) saturate(180%) contrast(110%);
-      border: 1px solid rgba(255, 255, 255, 0.35);
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      border: 1px solid rgba(255,255,255,0.03);
     }
 
-    .liquid-glass::before {
-      content: "";
-      position: absolute;
-      inset: -100%;
-      background: radial-gradient(
-        circle at center,
-        rgba(255, 255, 255, 0.6) 0%,
-        rgba(255, 255, 255, 0.05) 60%
-      );
-      animation: liquidMove 12s ease-in-out infinite;
-      opacity: 0.5;
-      pointer-events: none;
+    .hero{
+      padding:40px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     }
 
-    @keyframes liquidMove {
-      0% { transform: translate(-20%, -20%); }
-      50% { transform: translate(20%, 20%) scale(1.2); }
-      100% { transform: translate(-20%, -20%); }
+    h1{margin:0 0 6px 0;font-size:28px;}
+    p.lead{margin:0 0 18px 0;color:var(--muted)}
+
+    .info-list{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+    .info-item{display:flex;gap:12px;align-items:center}
+    .dot{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 4px 18px rgba(110,231,183,0.12)}
+
+    form{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:var(--muted)}
+    input[type="text"], input[type="email"], textarea{
+      width:100%;
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.02);
+      color:inherit;
+      font-size:15px;
+      outline:none;
+      transition:box-shadow .15s, border-color .15s;
+    }
+    input:focus, textarea:focus{box-shadow:0 6px 18px rgba(0,0,0,0.5);border-color:var(--accent)}
+    textarea{min-height:140px;resize:vertical}
+
+    .row{display:flex;gap:12px}
+    .row .col{flex:1}
+
+    .actions{display:flex;gap:10px;align-items:center;margin-top:6px}
+    button[type="submit"]{
+      background:linear-gradient(90deg, var(--accent), #3bd7a3);
+      border:none;padding:12px 18px;border-radius:10px;color:#012018;font-weight:600;cursor:pointer;box-shadow:0 8px 24px rgba(30,160,120,0.12)
+    }
+    button[disabled]{opacity:0.6;cursor:not-allowed}
+
+    .secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+
+    .notice{font-size:13px;color:var(--muted);margin-top:10px}
+
+    .status{margin-top:12px;font-size:14px}
+
+    /* responsive */
+    @media (max-width:900px){
+      .wrapper{grid-template-columns:1fr;}
     }
 
-    /* Particules animées */
-    .bg-particles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .particle {
-      position: absolute;
-      background: #4ade80;
-      border-radius: 50%;
-      opacity: 0.2;
-      animation: float 20s infinite linear;
-    }
-    @keyframes float {
-      0% { transform: translateY(100vh) rotate(0deg); }
-      100% { transform: translateY(-100px) rotate(360deg); }
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 2rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.5rem 0;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: var(--gap);
-    }
-
-    header.liquid-glass { border-bottom-color: rgba(0,0,0,0.1); }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      text-decoration: none;
-      color: #1a1a1a;
-    }
-
-    .logo {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4);
-      overflow: hidden;
-    }
-    .logo img { width: 100%; height: 100%; object-fit: cover; }
-
-    .brand-text h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin: 0;
-    }
-    .brand-text span {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      letter-spacing: 1px;
-    }
-
-    nav {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-    nav a {
-      padding: 10px 18px;
-      border-radius: 12px;
-      text-decoration: none;
-      color: var(--text-muted);
-      font-weight: 500;
-      transition: var(--transition);
-      background: rgba(255, 255, 255, 0.4);
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      backdrop-filter: blur(10px);
-    }
-    nav a:hover {
-      background: rgba(255, 255, 255, 0.7);
-      color: #1a1a1a;
-      transform: translateY(-2px);
-    }
-
-    .cta-btn {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      color: white !important;
-      padding: 12px 24px !important;
-      border-radius: 14px;
-      font-weight: 700;
-      box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
-      border: none !important;
-    }
-
-    .pressable { transition: transform 0.2s ease; }
-    .pressable:active { transform: scale(0.95); }
-
-    h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2.8rem;
-      text-align: center;
-      margin: 3rem 0 2rem;
-      background: linear-gradient(90deg, #1a1a1a, var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .channels-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: var(--gap);
-      margin-top: 2rem;
-    }
-
-    .channel-card {
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.06);
-    }
-
-    .channel-card:hover {
-      transform: translateY(-12px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-    }
-
-    .channel-card.disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    .channel-card h3 {
-      font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .channel-id {
-      font-size: 0.9rem;
-      color: var(--accent);
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-
-    .live-badge {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: var(--accent);
-      color: white;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    footer {
-      margin-top: 6rem;
-      padding: 2rem 0;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      border-top: 1px solid var(--border);
-    }
-
-    /* Modal */
-    #playerModal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
-      backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-      z-index: 9999;
-    }
-    #playerModal.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    #playerModal iframe {
-      width: 90%;
-      max-width: 1200px;
-      height: 80vh;
-      border: none;
-      border-radius: 20px;
-    }
-
-    .closeBtn {
-      position: absolute;
-      top: 30px;
-      right: 40px;
-      font-size: 40px;
-      color: white;
-      cursor: pointer;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,0.1);
-      border-radius: 50%;
-    }
-
-  </style>
+    /* little decorative footer */
+    .brand{font-size:12px;color:var(--muted);margin-top:18px}
+  .back-btn {display:inline-block;padding:10px 18px;background:#3498db;color:white;text-decoration:none;border-radius:8px;font-size:15px;transition:0.2s;} .back-btn:hover{background:#2980b9;} </style>
 </head>
 <body>
+<a href="/index.html" class="back-btn" style="position:fixed; top:15px; left:15px; z-index:1000;">← Retour</a>
+  <div class="wrapper">
+    <!-- Left: Info / Hero -->
+    <div class="card hero">
+      <h1>Contactez SOCO TV</h1>
+      <p class="lead">Une question, une proposition ou un souci ? Écris-nous — on te répond généralement sous 48h.</p>
 
-  <div class="bg-particles" id="particles"></div>
-
-  <div class="container">
-
-    <header class="liquid-glass">
-      <a href="index.html" class="brand pressable">
-        <div class="logo">
-          <img src="logo.png" alt="SOCO TV 2">
-        </div>
-        <div class="brand-text">
-          <h1>SOCO TV 2</h1>
-          <span>NOUVELLE GÉNÉRATION</span>
-        </div>
-      </a>
-
-      <nav>
-        <a href="#home" class="pressable">Accueil</a>
-        <a href="#channels" class="pressable">Chaînes</a>
-        <a href="contact.html" class="pressable">Contact</a>
-        <a href="#" class="cta-btn pressable" onclick="randomChannel(); return false;">J'ai de la chance</a>
-      </nav>
-    </header>
-
-    <main>
-      <h2>Découvrez nos 24 chaînes</h2>
-
-      <div class="channels-grid" id="channelsGrid">
-
-        <!-- Exemple : toutes les cartes sont Liquid Glass -->
-        <div class="channel-card pressable liquid-glass" onclick="openModal('echo')">
-          <div class="live-badge">LIVE</div>
-          <h3>Canal 1</h3>
-          <div class="channel-id">echo</div>
-        </div>
-
-        <div class="channel-card pressable disabled liquid-glass">
-          <h3>Canal 2</h3><div class="channel-id">Bientôt disponible</div>
-        </div>
-
-        <div class="channel-card pressable disabled liquid-glass">
-          <h3>Canal 3</h3><div class="channel-id">À venir...</div>
-        </div>
-
-        <!-- Continue les autres canaux identiques… -->
-
-        <div class="channel-card pressable liquid-glass" onclick="openModal('SOCO23')">
-          <div class="live-badge">LIVE</div>
-          <h3>Canal 23</h3><div class="channel-id">SOCO 23</div>
-        </div>
-
+      <div class="info-list">
+        <div class="info-item"><span class="dot"></span><div><strong>Temps de réponse</strong><div style="font-size:13px;color:var(--muted)">Généralement <strong>moins de 48h</strong></div></div></div>
+        <div class="info-item"><span class="dot"></span><div><strong>Utilisation</strong><div style="font-size:13px;color:var(--muted)">Formulaire sécurisé via Formspree</div></div></div>
+        <div class="info-item"><span class="dot"></span><div><strong>Confidentialité</strong><div style="font-size:13px;color:var(--muted)">Nous ne partageons pas vos données.</div></div></div>
       </div>
-    </main>
 
-    <footer class="liquid-glass">
-      © 2025 SOCO TV 2 • Groupe Yotvin SOCO • Version BETA 4.0
-    </footer>
-  </div>
+      <div class="brand">SOCO TV — <span style="opacity:.8">Formulaire conçu avec Formspree</span></div>
+    </div>
 
-  <div id="playerModal">
-    <div class="closeBtn pressable" onclick="closeModal()">×</div>
-    <iframe id="playerFrame" src=""></iframe>
+    <!-- Right: Form -->
+    <div class="card">
+      <!-- IMPORTANT: remplace FORM_ID par ton ID Formspree (ex: f/mayabcdef) -->
+      <form id="contactForm" action="https://formspree.io/f/myzlylyp" method="POST">
+        <label for="name">Nom</label>
+        <input id="name" name="name" type="text" placeholder="Ton nom" required />
+
+        <div class="row">
+          <div class="col">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="toi@exemple.com" required />
+          </div>
+          <div class="col">
+            <label for="subject">Sujet</label>
+            <input id="subject" name="subject" type="text" placeholder="À propos de..." />
+          </div>
+        </div>
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Écris ton message ici..." required></textarea>
+
+        <div class="actions">
+          <button id="submitBtn" type="submit">Envoyer le message</button>
+          <button id="resetBtn" type="button" class="secondary">Effacer</button>
+        </div>
+
+        <div class="notice">En envoyant ce message, vous acceptez que votre email soit utilisé pour vous répondre.</div>
+        <div id="status" class="status"></div>
+      </form>
+    </div>
   </div>
 
   <script>
-    const particlesContainer = document.getElementById('particles');
-    for(let i = 0; i < 30; i++) {
-      const p = document.createElement('div');
-      p.classList.add('particle');
-      p.style.width = p.style.height = Math.random() * 5 + 2 + 'px';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.animationDelay = Math.random() * 20 + 's';
-      p.style.animationDuration = 15 + Math.random() * 20 + 's';
-      particlesContainer.appendChild(p);
-    }
+    // Petit traitement local pour améliorer l'expérience avant envoi à Formspree
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const status = document.getElementById('status');
 
-    const channels = ['echo', 'nexttv', 'AIRBENZTV', 'SOCO23'];
-
-    function openModal(id) {
-      document.getElementById('playerFrame').src = `watch.html?id=${id}`;
-      document.getElementById('playerModal').classList.add('show');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      document.getElementById('playerModal').classList.remove('show');
-      document.getElementById('playerFrame').src = '';
-      document.body.style.overflow = 'auto';
-    }
-
-    function randomChannel() {
-      const randomId = channels[Math.floor(Math.random() * channels.length)];
-      openModal(randomId);
-    }
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModal();
+    resetBtn.addEventListener('click', ()=>{
+      form.reset();
+      status.textContent='';
     });
 
-    document.getElementById('playerModal').addEventListener('click', e => {
-      if (e.target.id === 'playerModal') {
-        closeModal();
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      submitBtn.disabled = true;
+      status.textContent = 'Envoi en cours...';
+
+      // récupère les données du formulaire
+      const data = new FormData(form);
+
+      // envoie via fetch (Formspree accepte POST JSON ou form data selon config)
+      try{
+        const response = await fetch(form.action, {
+          method:'POST',
+          headers: {
+            'Accept': 'application/json'
+          },
+          body: data
+        });
+
+        if (response.ok) {
+          status.innerHTML = '✅ Message envoyé — merci !';
+          form.reset();
+        } else {
+          const resJson = await response.json().catch(()=>null);
+          status.innerHTML = '❌ Erreur lors de l\'envoi. ' + (resJson && resJson.error ? resJson.error : 'Réessaie plus tard.');
+        }
+      }catch(err){
+        status.innerHTML = '❌ Impossible de contacter le serveur. Vérifie ton action ou ton ID Formspree.';
+      } finally{
+        submitBtn.disabled = false;
       }
     });
   </script>
-
 </body>
 </html>

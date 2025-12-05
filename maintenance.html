@@ -4,25 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SOCO TV 2 - Maintenance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #000;
-      color: #fff;
-      font-family: "Segoe UI", sans-serif;
-      height: 100vh;
       margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #001026 0%, #003b8b 10%, #ff0066 30%, #ff4500 45%, #00cc44 60%, #00ffee 75%, #7f00ff 90%, #003b8b 100%);
+      background-size: 400% 400%;
+      animation: gradientMove 20s ease infinite;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      min-height: 100vh;
       text-align: center;
       overflow: hidden;
+      transition: color 1s ease;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .logo {
       width: 120px;
       height: 120px;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       animation: rotate 5s linear infinite;
       filter: drop-shadow(0 0 10px #fff);
     }
@@ -34,43 +44,41 @@
 
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      animation: pulse 2s infinite;
+      margin-bottom: 20px;
+      transition: color 1s ease;
     }
 
     p {
-      color: #aaa;
-      font-size: 1.1rem;
-      margin-top: 0;
+      font-size: 1.2rem;
+      margin: 5px 0;
+      transition: color 1s ease;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    .loader {
-      margin-top: 30px;
-      width: 60px;
-      height: 60px;
-      border: 5px solid rgba(255,255,255,0.2);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 1.2s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
   </style>
 </head>
 <body>
+
   <img src="logo.png" alt="SOCO TV 2" class="logo">
-  
-  <h1>Maintenance en cours... </h1>
-  <p>Les canaux SOCO TV seront de retour sous peu. Merci de patienter le temps que la mise à jour se termine.</p>
-  <p>Note : Actulisez la page pour voir si la page d'origine revient.</p>
-  
-  <div class="loader"></div>
+  <h1>Maintenance en cours...</h1>
+  <p>Les canaux SOCO TV seront de retour sous peu.</p>
+
+  <script>
+    // Changement automatique du texte pour rester lisible sur le fond
+    const textElements = document.querySelectorAll('h1, p');
+    function updateTextColor() {
+      const bodyStyles = getComputedStyle(document.body);
+      const bg = bodyStyles.background;
+      const tempDiv = document.createElement('div');
+      tempDiv.style.background = bg;
+      document.body.appendChild(tempDiv);
+      const rgb = window.getComputedStyle(tempDiv).backgroundColor.match(/\d+/g);
+      document.body.removeChild(tempDiv);
+      const brightness = (rgb[0]*299 + rgb[1]*587 + rgb[2]*114) / 1000;
+      const color = brightness < 128 ? '#fff' : '#000';
+      textElements.forEach(el => el.style.color = color);
+    }
+    setInterval(updateTextColor, 1000);
+  </script>
+
 </body>
 </html>

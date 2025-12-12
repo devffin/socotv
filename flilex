@@ -1,3 +1,26 @@
-<!-- Elfsight Countdown Timer | Untitled Countdown Timer -->
-<script src="https://elfsightcdn.com/platform.js" async></script>
-<div class="elfsight-app-4570a57a-d144-4444-8a7a-748470b874d9" data-elfsight-app-lazy></div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site en Démarrage</title>
+    <style>
+        body {
+            margin: 0;
+            background: #ffffff; /* page blanche */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Elfsight Countdown Timer | Untitled Countdown Timer -->
+    <script src="https://elfsightcdn.com/platform.js" async></script>
+    <div class="elfsight-app-4570a57a-d144-4444-8a7a-748470b874d9" data-elfsight-app-lazy></div>
+
+</body>
+</html>

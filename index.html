@@ -1,75 +1,27 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Décompte SOCO TV 2</title>
-    <style>
-        body {
-            background: #0d0d0d;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding-top: 80px;
-        }
-        h1 {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-        #countdown {
-            font-size: 48px;
-            font-weight: bold;
-            margin-top: 30px;
-        }
-    </style>
-</head>
-<body>
+<script>
+    // ---- DATE DE FIN UNIVERSELLE ----
+    // Décompte jusqu'au 17 décembre 2025 à 00h00
+    const targetDate = new Date("2025-12-17T00:00:00").getTime();
 
-    <h1>SOCO TV 2, version gamma, tout nouveau design</h1>
-    <div id="countdown">Chargement du décompte...</div>
+    function updateCountdown() {
+        const now = Date.now();
+        const distance = targetDate - now;
 
-    <script>
-        // Nom de la clé dans localStorage
-        const KEY = "soco_tv2_end";
-
-        function getTargetDate() {
-            let stored = localStorage.getItem(KEY);
-            if (stored) {
-                // Convertir en nombre
-                const parsed = Number(stored);
-                if (!isNaN(parsed)) return parsed;
-            }
-            // Si pas de clé ou invalide, on crée une nouvelle date
-            const now = Date.now();
-            const eightDays = 8 * 24 * 60 * 60 * 1000;
-            const end = now + eightDays;
-            localStorage.setItem(KEY, end);
-            return end;
+        if (distance <= 0) {
+            document.getElementById("countdown").innerHTML =
+                "Le moment est arrivé !";
+            return;
         }
 
-        const targetDate = getTargetDate();
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        function updateCountdown() {
-            const now = Date.now();
-            const distance = targetDate - now;
+        document.getElementById("countdown").innerText =
+            `${days}j ${hours}h ${minutes}m ${seconds}s`;
+    }
 
-            if (distance <= 0) {
-                document.getElementById("countdown").innerHTML = "Le moment est arrivé !";
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("countdown").innerText =
-                `${days}j ${hours}h ${minutes}m ${seconds}s`;
-        }
-
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-    </script>
-
-</body>
-</html>
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+</script>

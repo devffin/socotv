@@ -1,6 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Décompte SOCO TV 2</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Segoe UI", Arial, sans-serif;
+        overflow: hidden;
+        background: linear-gradient(135deg, #ff7f00, #2eff5c);
+    }
+
+    /* Vagues visibles partout */
+    .wave {
+        position: absolute;
+        width: 200%;
+        height: 60%;
+        top: 50%;
+        left: -50%;
+        border-radius: 45%;
+        opacity: 0.45;
+        animation: waveMove 18s infinite linear;
+        filter: blur(60px);
+        z-index: 1;
+    }
+
+    .wave.red { background: rgba(255, 60, 60, 0.8); }
+    .wave.green { background: rgba(60, 255, 120, 0.8); animation-duration: 22s; }
+    .wave.blue { background: rgba(80, 140, 255, 0.8); animation-duration: 26s; }
+
+    @keyframes waveMove {
+        0%   { transform: rotate(0deg) translateY(0px); }
+        50%  { transform: rotate(180deg) translateY(-40px); }
+        100% { transform: rotate(360deg) translateY(0px); }
+    }
+
+    /* Conteneur du décompte */
+    .count-container {
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 40px 60px;
+        border-radius: 22px;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 32px;
+        color: white;
+        margin-bottom: 20px;
+    }
+
+    #countdown {
+        font-size: 48px;
+        font-weight: bold;
+        color: #ffffff;
+        letter-spacing: 2px;
+        text-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+</style>
+</head>
+<body>
+
+<!-- Vagues -->
+<div class="wave red"></div>
+<div class="wave green"></div>
+<div class="wave blue"></div>
+
+<!-- Décompte -->
+<div class="count-container">
+    <h1>SOCO TV 2 — Décompte final</h1>
+    <div id="countdown">Chargement...</div>
+</div>
+
 <script>
-    // ---- DATE DE FIN UNIVERSELLE ----
-    // Décompte jusqu'au 17 décembre 2025 à 00h00
+    // Date fixe : 17 décembre 2025 à 00:00
     const targetDate = new Date("2025-12-17T00:00:00").getTime();
 
     function updateCountdown() {
@@ -8,8 +91,7 @@
         const distance = targetDate - now;
 
         if (distance <= 0) {
-            document.getElementById("countdown").innerHTML =
-                "Le moment est arrivé !";
+            document.getElementById("countdown").innerHTML = "Le moment est arrivé !";
             return;
         }
 
@@ -25,3 +107,6 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 </script>
+
+</body>
+</html>

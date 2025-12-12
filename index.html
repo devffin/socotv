@@ -29,24 +29,31 @@
     <div id="countdown">Chargement du décompte...</div>
 
     <script>
-        const countdownKey = "soco_tv2_end_date";
-        let targetDate;
+        // Nom de la clé dans localStorage
+        const KEY = "soco_tv2_end";
 
-        // Vérifie si une date de fin existe déjà dans localStorage
-        if (localStorage.getItem(countdownKey)) {
-            targetDate = parseInt(localStorage.getItem(countdownKey"));
-        } else {
-            // Crée une nouvelle date de fin (dans 8 jours)
-            const now = new Date().getTime();
-            targetDate = now + (8 * 24 * 60 * 60 * 1000);
-            localStorage.setItem(countdownKey, targetDate);
+        function getTargetDate() {
+            let stored = localStorage.getItem(KEY);
+            if (stored) {
+                // Convertir en nombre
+                const parsed = Number(stored);
+                if (!isNaN(parsed)) return parsed;
+            }
+            // Si pas de clé ou invalide, on crée une nouvelle date
+            const now = Date.now();
+            const eightDays = 8 * 24 * 60 * 60 * 1000;
+            const end = now + eightDays;
+            localStorage.setItem(KEY, end);
+            return end;
         }
 
+        const targetDate = getTargetDate();
+
         function updateCountdown() {
-            const now = new Date().getTime();
+            const now = Date.now();
             const distance = targetDate - now;
 
-            if (distance < 0) {
+            if (distance <= 0) {
                 document.getElementById("countdown").innerHTML = "Le moment est arrivé !";
                 return;
             }
@@ -56,11 +63,10 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("countdown").innerHTML =
-                days + "j " + hours + "h " + minutes + "m " + seconds + "s";
+            document.getElementById("countdown").innerText =
+                `${days}j ${hours}h ${minutes}m ${seconds}s`;
         }
 
-        // Mise à jour chaque seconde
         setInterval(updateCountdown, 1000);
         updateCountdown();
     </script>

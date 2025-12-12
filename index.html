@@ -29,14 +29,18 @@
     <div id="countdown">Chargement du décompte...</div>
 
     <script>
-        // Durée du décompte : 8 jours
-        const countdownDuration = 8 * 24 * 60 * 60 * 1000; 
+        const countdownKey = "soco_tv2_end_date";
+        let targetDate;
 
-        // Date actuelle
-        const startDate = new Date().getTime();
-
-        // Date cible
-        const targetDate = startDate + countdownDuration;
+        // Vérifie si une date de fin existe déjà dans localStorage
+        if (localStorage.getItem(countdownKey)) {
+            targetDate = parseInt(localStorage.getItem(countdownKey"));
+        } else {
+            // Crée une nouvelle date de fin (dans 8 jours)
+            const now = new Date().getTime();
+            targetDate = now + (8 * 24 * 60 * 60 * 1000);
+            localStorage.setItem(countdownKey, targetDate);
+        }
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -63,4 +67,3 @@
 
 </body>
 </html>
-

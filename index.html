@@ -47,7 +47,7 @@
         width: 30vw;
         margin-top: 2vh;
         background: white;
-        color: blue;
+        color: white;
         border: 3px solid red;
     }
 </style>
@@ -99,7 +99,7 @@
     function draw() {
         for(let i=0;i<pixels.length;i++){
             const p = pixels[i];
-            ctx.fillStyle = p.color ? 'white':'black';
+            ctx.fillStyle = p.color ? 'blue':'black';
             ctx.fillRect(p.x, p.y, pixelSize, pixelSize);
             if(Math.random() < 0.1) p.color = 1 - p.color;
         }

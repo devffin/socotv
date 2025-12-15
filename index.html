@@ -65,7 +65,7 @@
 <div class="container">
   <header class="glass">
     <a href="#" class="brand">
-      <div class="logo"><img src="logo.png" alt="SOCO TV 2"></div>
+      <div class="logo"><img src="logo" alt="SOCO TV 2"></div>
       <div>
         <h1>SOCO TV 2</h1>
         <span>SOCO LIVE</span>
@@ -79,12 +79,12 @@
     </nav>
   </header>
 
-  <h2>24 chaînes. Une expérience premium.</h2>
+  <h2>24 chaînes. 24 s.</h2>
 
   <section class="channels" id="channels"></section>
 
   <footer class="glass">
-    © 2025 SOCO TV 2 — Streaming Premium Gratuit<br>
+    © 2025 SOCO TV 2 — l'évolution de la télévision numérique<br>
     Crédits :  Devffin, Yotvin, SOCO, Diffin
   </footer>
 </div>
@@ -119,13 +119,13 @@
         if (code === CHANNEL_PASSWORD) {
           openModal(c.id);
         } else {
-          alert('Code incorrect. Accès refusé.');
+          alert('Code incorrect. Accès refusé. Demandez l'accès par mail au mlr.suppor105@gmail.com ou Payez 2€');
         }
       } else {
         openModal(c.id);
       }
     };
-    el.innerHTML = `${c.live ? '<div class="live">LIVE</div>' : ''}<h3>${c.name}</h3><div class="channel-id">${c.id ?? 'Bientôt disponible'}</div>`;
+    el.innerHTML = `${c.live ? '<div class="live">Louée</div>' : ''}<h3>${c.name}</h3><div class="channel-id">${c.id ?? 'Non-louée'}</div>`;
     grid.appendChild(el);
   });
 

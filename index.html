@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SOCO TV 2 • Premium Streaming Experience</title>
+  <title>SOCO TV 2 • version Gamma</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -229,7 +229,7 @@
       <div class="logo"><img src="logo.png" alt="SOCO TV 2"></div>
       <div>
         <h1>SOCO TV 2</h1>
-        <span>PREMIUM STREAMING</span>
+        <span>Gamma edition</span>
       </div>
     </a>
 
@@ -241,13 +241,13 @@
     </nav>
   </header>
 
-  <h2>24 chaînes. Une expérience premium.</h2>
+  <h2>24 chaînes. 24 passions.</h2>
 
   <section class="channels" id="channels"></section>
 
   <footer class="glass">
-    © 2025 SOCO TV 2 — Streaming Premium Gratuit<br>
-    Interface inspirée des services payants nouvelle génération
+    © 2025 SOCO TV 2 — l'évolution de diffusion virtuelle<br>
+    Crédits :  Devffin, Yotvin, SOCO, Diffin
   </footer>
 </div>
 
@@ -276,7 +276,7 @@
     el.className = 'channel glass' + (c.id ? '' : ' disabled');
     if (c.id) el.onclick = () => openModal(c.id);
     el.innerHTML = `
-      ${c.live ? '<div class="live">LIVE</div>' : ''}
+      ${c.live ? '<div class="live">Louée</div>' : ''}
       <h3>${c.name}</h3>
       <div class="channel-id">${c.id ?? 'Bientôt disponible'}</div>
     `;

@@ -3,151 +3,166 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SOCO TV 2 • Nouvelle génération TV</title>
+  <title>SOCO TV 2 • La nouvelle génération TV</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --accent: #ff4757;
       --accent2: #ff6b7a;
-      --neon: #ff8fa3;
-      --bg1: #07080c;
-      --bg2: #0e1118;
-      --glass: rgba(255,255,255,0.12);
-      --border: rgba(255,255,255,0.25);
-      --muted: #9aa4b5;
-      --radius: 22px;
-      --radius-lg: 28px;
-      --transition: 0.45s cubic-bezier(.2,.8,.2,1);
+      --text-muted: #a9b3c3;
+      --radius: 16px;
+      --gap: 24px;
+      --border: rgba(255,255,255,0.15);
+      --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', system-ui, sans-serif; color: #fff; background: radial-gradient(1200px 500px at 80% -10%, rgba(255,71,87,0.15), transparent 60%), radial-gradient(900px 400px at -10% 30%, rgba(255,107,122,0.12), transparent 60%), linear-gradient(180deg, var(--bg1), var(--bg2)); min-height: 100vh; overflow-x: hidden; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    .glass { position: relative; background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05)); backdrop-filter: blur(22px) saturate(160%); -webkit-backdrop-filter: blur(22px) saturate(160%); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 25px 60px rgba(0,0,0,0.65); overflow: hidden; }
-    .glass::after { content: ""; position: absolute; inset: 0; background: radial-gradient(600px 200px at 10% 0%, rgba(255,255,255,0.35), transparent 50%); opacity: .35; pointer-events: none; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0d0d10, #1a1f27, #10131a);
+      color: #e3e3e3;
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-    .container { max-width: 1500px; margin: auto; padding: 2rem; }
+    .liquid-glass {
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: var(--radius);
+      box-shadow: inset 0 0 0.6px rgba(255,255,255,0.45), inset 0 0 18px rgba(255,255,255,0.12), 0 6px 25px rgba(0,0,0,0.4);
+    }
 
-    header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 2rem; padding: 1.5rem 2rem; }
-    .brand { display: flex; gap: 18px; align-items: center; text-decoration: none; color: #fff; }
-    .logo { width: 64px; height: 64px; border-radius: 18px; background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: 0 0 40px rgba(255,71,87,0.55); display: grid; place-items: center; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
+
+    header { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 0; border-bottom: 1px solid var(--border); margin-bottom: var(--gap); }
+
+    .brand { display: flex; align-items: center; gap: 16px; text-decoration: none; color: #fff; }
+    .logo { width: 60px; height: 60px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 16px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .logo img { width: 100%; height: 100%; object-fit: cover; }
-    .brand h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; letter-spacing: .5px; }
-    .brand span { font-size: .8rem; color: var(--muted); letter-spacing: 2px; }
+    .brand-text h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 700; }
+    .brand-text span { font-size: 0.85rem; color: var(--text-muted); letter-spacing: 1px; }
 
-    nav { display: flex; gap: 14px; justify-self: end; }
-    nav a { padding: 12px 22px; border-radius: 999px; text-decoration: none; font-weight: 600; color: #fff; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); transition: var(--transition); }
-    nav a:hover { background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: 0 0 30px rgba(255,71,87,0.55); transform: translateY(-2px); }
+    nav { display: flex; gap: 12px; align-items: center; }
+    nav a { padding: 10px 18px; border-radius: 12px; text-decoration: none; color: var(--text-muted); font-weight: 500; transition: var(--transition); background: rgba(255, 255, 255, 0.10); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(10px); }
+    nav a:hover { background: rgba(255,255,255,0.25); color: #fff; transform: translateY(-2px); }
 
-    h2 { margin: 4rem 0 3rem; text-align: center; font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.5rem, 5vw, 3.2rem); background: linear-gradient(90deg, #fff, var(--neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.6rem; text-align: center; margin: 3rem 0 2rem; color: #fff; }
 
-    .channels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-    .channel { padding: 2rem; border-radius: var(--radius-lg); position: relative; cursor: pointer; transition: var(--transition); }
-    .channel:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 30px 80px rgba(0,0,0,0.7); }
-    .channel.disabled { opacity: .35; filter: grayscale(1); cursor: not-allowed; }
-    .channel h3 { font-size: 1.5rem; margin-bottom: .4rem; }
-    .channel-id { color: var(--muted); font-size: .9rem; }
-    .live { position: absolute; top: 20px; right: 20px; background: linear-gradient(135deg, var(--accent), var(--accent2)); padding: 6px 14px; border-radius: 999px; font-size: .7rem; font-weight: 900; letter-spacing: 1px; box-shadow: 0 0 20px rgba(255,71,87,0.6); }
+    .channels-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--gap); margin-top: 2rem; }
 
-    #playerModal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); display: grid; place-items: center; opacity: 0; pointer-events: none; transition: .4s ease; z-index: 9999; }
+    .channel-card { border-radius: var(--radius); padding: 1.5rem; cursor: pointer; position: relative; overflow: hidden; opacity: 0; transform: translateY(40px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .channel-card.visible { opacity: 1; transform: translateY(0); }
+    .channel-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+    .channel-card.disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .live-badge { position: absolute; top: 12px; right: 12px; background: var(--accent); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+    footer { margin-top: 6rem; padding: 2rem 0; text-align: center; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--border); }
+
+    #playerModal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; z-index: 9999; }
     #playerModal.show { opacity: 1; pointer-events: auto; }
-    #playerModal iframe { width: min(1400px, 92vw); height: 82vh; border-radius: 28px; border: none; box-shadow: 0 40px 100px rgba(0,0,0,0.9); }
-    .closeBtn { position: absolute; top: 32px; right: 40px; width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.15); display: grid; place-items: center; font-size: 32px; cursor: pointer; }
-    footer { margin: 6rem 0 2rem; padding: 2rem; text-align: center; font-size: .85rem; color: var(--muted); }
+    #playerModal iframe { width: 90%; max-width: 1200px; height: 80vh; border: none; border-radius: 20px; }
+    .closeBtn { position: absolute; top: 30px; right: 40px; font-size: 40px; color: white; cursor: pointer; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 50%; }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <header class="glass">
-    <a href="#" class="brand">
-      <div class="logo"><img src="logo" alt="SOCO TV 2"></div>
-      <div>
-        <h1>SOCO TV 2</h1>
-        <span>SOCO LIVE</span>
-      </div>
-    </a>
-    <nav>
-      <a href="#">Accueil</a>
-      <a href="#">Chaînes</a>
-      <a href="#">Contact</a>
-      <a href="#" onclick="randomChannel();return false;">Surprise</a>
-    </nav>
-  </header>
+  <div class="container">
 
-  <h2>24 chaînes. 24 s.</h2>
+    <header class="liquid-glass">
+      <a href="#" class="brand">
+        <div class="logo">
+          <img src="logo.png" alt="SOCO TV 2">
+        </div>
+        <div class="brand-text">
+          <h1>SOCO TV 2</h1>
+          <span>SOCO LIVE</span>
+        </div>
+      </a>
 
-  <section class="channels" id="channels"></section>
+      <nav>
+        <a href="#home">Accueil</a>
+        <a href="#channels">Chaînes</a>
+        <a href="contact.html">Contact</a>
+        <a href="#" onclick="randomChannel(); return false;">Surprise</a>
+      </nav>
+    </header>
 
-  <footer class="glass">
-    © 2025 SOCO TV 2 — l'évolution de la télévision numérique<br>
-    Crédits :  Devffin, Yotvin, SOCO, Diffin
-  </footer>
-</div>
+    <main>
+      <h2>Découvrez nos 24 chaînes</h2>
 
-<div id="playerModal">
-  <div class="closeBtn" onclick="closeModal()">×</div>
-  <iframe id="playerFrame"></iframe>
-</div>
+      <div class="channels-grid" id="channelsGrid"></div>
+    </main>
 
-<script>
-  const CHANNEL_PASSWORD = 'S7K32GH3OYRT7749BFJ02'; // code pour SOCO23
+    <footer class="liquid-glass">
+      © 2025 SOCO TV 2 — L'évolution de la télévision numérique
+    </footer>
+  </div>
 
-  const channels = [
-    {id:'echo', name:'Canal 1', live:true},
-    {id:null, name:'Canal 2'},
-    {id:null, name:'Canal 3'},
-    {id:null, name:'Canal 4'},
-    {id:'nexttv', name:'Canal 5', live:true},
-    {id:'AIRBENZTV', name:'Canal 6', live:true},
-    ...Array.from({length:16},(_,i)=>({id:null,name:`Canal ${i+7}`})),
-    {id:'SOCO23', name:'Canal 23', live:true, restricted:true},
-    {id:null, name:'Canal 24'}
-  ];
+  <div id="playerModal">
+    <div class="closeBtn" onclick="closeModal()">×</div>
+    <iframe id="playerFrame" src=""></iframe>
+  </div>
 
-  const grid = document.getElementById('channels');
-  channels.forEach(c => {
-    const el = document.createElement('div');
-    el.className = 'channel glass' + (c.id ? '' : ' disabled');
-    if (c.id) el.onclick = () => {
-      if (c.restricted) {
-        const code = prompt('Entrez le code pour regarder ' + c.name + ':');
-        if (code === CHANNEL_PASSWORD) {
-          openModal(c.id);
+  <script>
+    const channels = [
+      {id:'echo', name:'Canal 1', live:true},
+      {id:null, name:'Canal 2'},
+      {id:null, name:'Canal 3'},
+      {id:null, name:'Canal 4'},
+      {id:'nexttv', name:'Canal 5', live:true},
+      {id:'AIRBENZTV', name:'Canal 6', live:true},
+      ...Array.from({length:16},(_,i)=>({id:null,name:`Canal ${i+7}`})),
+      {id:'SOCO23', name:'Canal 23', live:true, restricted:true},
+      {id:null, name:'Canal 24'}
+    ];
+
+    const CHANNEL_PASSWORD = '1234';
+    const grid = document.getElementById('channelsGrid');
+
+    channels.forEach(c => {
+      const el = document.createElement('div');
+      el.className = 'channel-card liquid-glass' + (c.id ? '' : ' disabled');
+      if(c.id) el.onclick = () => {
+        if(c.restricted){
+          const code = prompt('Entrez le code pour '+c.name+':');
+          if(code === CHANNEL_PASSWORD) openModal(c.id);
+          else alert('Code incorrect');
         } else {
-          alert('Code incorrect. Accès refusé. Demandez l'accès par mail au mlr.suppor105@gmail.com ou Payez 2€');
+          openModal(c.id);
         }
-      } else {
-        openModal(c.id);
-      }
-    };
-    el.innerHTML = `${c.live ? '<div class="live">Louée</div>' : ''}<h3>${c.name}</h3><div class="channel-id">${c.id ?? 'Non-louée'}</div>`;
-    grid.appendChild(el);
-  });
+      };
+      el.innerHTML = `${c.live ? '<div class="live-badge">Louée</div>' : ''}<h3>${c.name}</h3><div class="channel-id">${c.id ?? 'Bientôt disponible'}</div>`;
+      grid.appendChild(el);
+    });
 
-  function openModal(id) {
-    document.getElementById('playerFrame').src = `watch.html?id=${id}`;
-    document.getElementById('playerModal').classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
+    function openModal(id){
+      document.getElementById('playerFrame').src = `watch.html?id=${id}`;
+      document.getElementById('playerModal').classList.add('show');
+      document.body.style.overflow='hidden';
+    }
 
-  function closeModal() {
-    document.getElementById('playerModal').classList.remove('show');
-    document.getElementById('playerFrame').src = '';
-    document.body.style.overflow = '';
-  }
+    function closeModal(){
+      document.getElementById('playerModal').classList.remove('show');
+      document.getElementById('playerFrame').src='';
+      document.body.style.overflow='auto';
+    }
 
-  function randomChannel() {
-    const lives = channels.filter(c => c.id).map(c => c.id);
-    openModal(lives[Math.floor(Math.random()*lives.length)]);
-  }
+    document.addEventListener('keydown', e => {if(e.key==='Escape') closeModal();});
 
-  document.addEventListener('keydown', e => e.key === 'Escape' && closeModal());
-</script>
-
+    function randomChannel(){
+      const liveIds = channels.filter(c=>c.id).map(c=>c.id);
+      openModal(liveIds[Math.floor(Math.random()*liveIds.length)]);
+    }
+  </script>
 </body>
 </html>

@@ -3,207 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Garry</title>
-
-<style>
-:root {
-  --bg: #f4f6f8;
-  --card: #ffffff;
-  --primary: #2196f3;
-  --danger: #e53935;
-  --success: #43a047;
-  --text: #111;
-  --border: #ddd;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
-
-/* HEADER */
-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px;
-  background: white;
-  border-bottom: 1px solid var(--border);
-}
-
-header img { height: 38px; }
-
-/* LAYOUT */
-#main {
-  display: flex;
-  height: calc(100vh - 60px);
-}
-
-#left {
-  width: 25%;
-  border-right: 1px solid var(--border);
-  padding: 10px;
-}
-
-#right {
-  width: 75%;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* MOBILE MODE */
-.mobile #main {
-  flex-direction: column;
-}
-
-.mobile #left,
-.mobile #right {
-  width: 100%;
-}
-
-/* CARDS */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-/* CHAT */
-#messages {
-  flex: 1;
-  overflow-y: auto;
-}
-
-.message {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-}
-
-.message small {
-  color: #777;
-}
-
-/* INPUTS */
-input, button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  font-size: 14px;
-}
-
-button {
-  cursor: pointer;
-}
-
-.primary { background: var(--primary); color: white; }
-.success { background: var(--success); color: white; }
-.danger  { background: var(--danger); color: white; }
-
-/* VIDEO */
-video {
-  width: 49%;
-  background: black;
-  border-radius: 8px;
-}
-
-/* CONTROLS */
-.controls {
-  display: flex;
-  gap: 6px;
-  margin-top: 6px;
-}
-
-/* POPUPS */
-.popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.popupContent {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 320px;
-}
-</style>
-</head>
-
-<body>
-
-<!-- POPUP BIENVENUE -->
-<div class="popup" id="welcomePopup">
-  <div class="popupContent">
-    <h2>SOCO TV 2 devient Garry</h2>
-    <p>Une messagerie made by SOCO</p>
-    <button class="primary" onclick="closeWelcome()">Continuer</button>
-  </div>
-</div>
-
-<!-- POPUP APPEL -->
-<div class="popup" id="callPopup" style="display:none">
-  <div class="popupContent">
-    <h3>Ton pseudo</h3>
-    <input id="pseudoInput" placeholder="Pseudo">
-    <button class="primary" onclick="confirmCall()">Démarrer l’appel</button>
-  </div>
-</div>
-
-<header>
-  <img src="logo.png">
-  <h2>Garry</h2>
-  <button onclick="toggleMobile()" style="margin-left:auto">📱 Mode mobile</button>
-</header>
-
-<div id="main">
-
-<div id="left">
-  <div class="card">
-    <button class="success" onclick="openCallPopup(true)">🎥 Appel vidéo</button>
-    <button class="success" onclick="openCallPopup(false)">📞 Appel audio</button>
-  </div>
-
-  <div class="card">
-    <input id="messageInput" placeholder="Message global">
-    <button onclick="sendMessage()">Envoyer</button>
-  </div>
-</div>
-
-<div id="right">
-  <div class="card" id="messages"></div>
-
-  <div class="card">
-    <div style="display:flex; gap:6px">
-      <video id="localVideo" autoplay muted></video>
-      <video id="remoteVideo" autoplay></video>
-    </div>
-
-    <div class="controls">
-      <button onclick="toggleMic()">🎤 Micro</button>
-      <button onclick="toggleCam()">🎥 Caméra</button>
-      <button class="danger" onclick="hangUp()">⛔ Raccrocher</button>
-    </div>
-  </div>
-</div>
-
-</div>
-
+<title>Garry - SOCO TV 2</title>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<style>
+body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f2f2f2; color:#222;}
+#popup {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;color:white;font-size:1.5rem;z-index:1000;}
+#main {max-width:1200px;margin:auto;padding:20px;background:white;box-shadow:0 0 10px rgba(0,0,0,0.2);border-radius:10px;}
+#logo {max-width:200px;display:block;margin:auto;}
+#chat {border:1px solid #ccc;height:200px;overflow-y:auto;padding:10px;margin-bottom:10px;background:#fafafa;border-radius:5px;}
+#messages {width:calc(100% - 110px);padding:8px;}
+#sendBtn {width:100px;padding:8px;}
+#callArea {display:none;flex-direction:column;align-items:center;gap:10px;margin-top:20px;}
+video {width:300px;height:225px;background:black;border-radius:5px;}
+button {padding:8px 12px;margin:2px;border:none;border-radius:5px;background:#007bff;color:white;cursor:pointer;}
+button:hover {background:#0056b3;}
+#mobileBtn {display:none;position:fixed;bottom:10px;right:10px;z-index:100;}
+#usersList {border:1px solid #ccc;padding:10px;background:#fafafa;border-radius:5px;margin-bottom:10px;max-height:150px;overflow-y:auto;}
+@media(max-width:768px){#mobileBtn{display:block;} video{width:100%;height:auto;}}
+</style>
+</head>
+<body>
+
+<div id="popup">
+  SOCO TV 2 devient Garry, une messagerie made by SOCO<br><br>
+  <label>Pseudo: <input type="text" id="pseudoInput" placeholder="Votre pseudo"></label><br><br>
+  <button onclick="closePopup()">Entrer</button>
+</div>
+
+<div id="main">
+  <img src="LOGO_URL_ICI" id="logo" alt="Logo SOCO TV 2">
+
+  <div id="usersList"></div>
+
+  <div id="chat"></div>
+  <input type="text" id="messages" placeholder="Tapez un message">
+  <button id="sendBtn">Envoyer</button>
+
+  <div id="callArea">
+    <video id="localVideo" autoplay muted></video>
+    <video id="remoteVideo" autoplay></video>
+    <div>
+      <button onclick="toggleMic()">Micro</button>
+      <button onclick="toggleCam()">Caméra</button>
+      <button onclick="hangUp()">Raccrocher</button>
+    </div>
+  </div>
+
+  <button id="mobileBtn" onclick="enableMobile()">Mode Mobile</button>
+</div>
 
 <script>
-// 🔥 CONFIG FIREBASE (À REMPLACER)
+let userID = localStorage.getItem('garryID');
+if(!userID){userID = crypto.randomUUID(); localStorage.setItem('garryID', userID);}
+let pseudo = localStorage.getItem('garryPseudo') || 'Garry'+userID.slice(0,4);
+document.getElementById('pseudoInput').value = pseudo;
+
+// Popup
+function closePopup(){
+  pseudo = document.getElementById('pseudoInput').value || pseudo;
+  localStorage.setItem('garryPseudo', pseudo);
+  document.getElementById('popup').style.display='none';
+  init();
+}
+
+function enableMobile(){document.body.style.width='360px';document.body.style.margin='auto';}
+
+// Firebase Config - Remplacez vos infos
 const firebaseConfig = {
   apiKey: "TON_API_KEY",
   authDomain: "TON_PROJET.firebaseapp.com",
@@ -213,109 +80,104 @@ const firebaseConfig = {
   messagingSenderId: "ID",
   appId: "APP_ID"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-let pc = null;
-let localStream = null;
-let isVideo = true;
-let micOn = true;
-let camOn = true;
+// Variables WebRTC
+let localStream, peerConnection;
+const config={iceServers:[{urls:'stun:stun.l.google.com:19302'}]};
+const localVideo=document.getElementById('localVideo');
+const remoteVideo=document.getElementById('remoteVideo');
+let currentCallID=null;
 
-/* BIENVENUE */
-function closeWelcome() {
-  welcomePopup.style.display = "none";
+function init(){
+  const usersRef = db.ref('users');
+  usersRef.child(userID).set({pseudo:pseudo, online:true});
+  usersRef.child(userID).onDisconnect().remove();
+
+  // Affiche les utilisateurs en ligne
+  usersRef.on('value', snapshot=>{
+    const usersList=document.getElementById('usersList');
+    usersList.innerHTML='Utilisateurs en ligne:<br>';
+    snapshot.forEach(child=>{
+      const u = child.val();
+      if(child.key!==userID){
+        const btn=document.createElement('button');
+        btn.textContent='Appeler '+u.pseudo;
+        btn.onclick=()=>startCall(child.key);
+        usersList.appendChild(btn);
+        usersList.appendChild(document.createElement('br'));
+      }
+    });
+  });
+
+  // Chat
+  const chatBox=document.getElementById('chat');
+  const messagesInput=document.getElementById('messages');
+  const sendBtn=document.getElementById('sendBtn');
+
+  sendBtn.onclick=()=>{if(messagesInput.value.trim()!==''){db.ref('messages').push({from:pseudo,text:messagesInput.value});messagesInput.value='';}};
+  db.ref('messages').on('child_added', snapshot=>{
+    const msg=document.createElement('div');
+    const data=snapshot.val();
+    msg.textContent=(data.from||'Anonyme')+': '+data.text;
+    chatBox.appendChild(msg);
+    chatBox.scrollTop=chatBox.scrollHeight;
+  });
 }
 
-/* MODE MOBILE */
-function toggleMobile() {
-  document.body.classList.toggle("mobile");
-}
-
-/* CHAT GLOBAL */
-function sendMessage() {
-  const text = messageInput.value.trim();
-  if (!text) return;
-  db.ref("messages").push({ text, time: Date.now() });
-  messageInput.value = "";
-}
-
-db.ref("messages").limitToLast(200).on("child_added", snap => {
-  const msg = snap.val();
-  const d = document.createElement("div");
-  d.className = "message";
-  d.innerHTML = `<strong>Anonyme</strong>
-    <small>${new Date(msg.time).toLocaleTimeString()}</small><br>${msg.text}`;
-  messages.appendChild(d);
-  messages.scrollTop = messages.scrollHeight;
-});
-
-/* APPELS */
-function openCallPopup(video) {
-  isVideo = video;
-  callPopup.style.display = "flex";
-}
-
-function confirmCall() {
-  callPopup.style.display = "none";
-  startCall();
-}
-
-async function startCall() {
-  pc = new RTCPeerConnection();
-  localStream = await navigator.mediaDevices.getUserMedia({ audio:true, video:isVideo });
-  localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
+// Appel WebRTC ciblé
+async function startCall(targetID){
+  document.getElementById('callArea').style.display='flex';
+  localStream = await navigator.mediaDevices.getUserMedia({video:true,audio:true});
   localVideo.srcObject = localStream;
+  peerConnection = new RTCPeerConnection(config);
+  localStream.getTracks().forEach(track=>peerConnection.addTrack(track,localStream));
+  peerConnection.ontrack=e=>{remoteVideo.srcObject=e.streams[0];};
+  const callID = userID+'_'+targetID;
+  currentCallID=callID;
+  const callRef=db.ref('calls/'+callID);
+  peerConnection.onicecandidate = event=>{if(event.candidate){callRef.child('candidates').push(event.candidate.toJSON());}};
+  const offer = await peerConnection.createOffer();
+  await peerConnection.setLocalDescription(offer);
+  await callRef.set({from:userID,to:targetID,offer:offer.toJSON()});
 
-  pc.ontrack = e => remoteVideo.srcObject = e.streams[0];
-
-  const offer = await pc.createOffer();
-  await pc.setLocalDescription(offer);
-  db.ref("call").set({ offer });
+  // Ecoute réponse
+  callRef.on('value',async snapshot=>{
+    const data=snapshot.val();
+    if(data?.answer && !peerConnection.currentRemoteDescription){
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+    }
+  });
+  callRef.child('candidates').on('child_added',snapshot=>{peerConnection.addIceCandidate(new RTCIceCandidate(snapshot.val()));});
 }
 
-db.ref("call").on("value", async s => {
-  if (!s.exists() || pc) return;
-
-  pc = new RTCPeerConnection();
-  pc.ontrack = e => remoteVideo.srcObject = e.streams[0];
-
-  localStream = await navigator.mediaDevices.getUserMedia({ audio:true, video:true });
-  localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
-  localVideo.srcObject = localStream;
-
-  await pc.setRemoteDescription(s.val().offer);
-  const answer = await pc.createAnswer();
-  await pc.setLocalDescription(answer);
-  db.ref("call/answer").set(answer);
+// Recevoir les appels
+db.ref('calls').on('child_added',async snapshot=>{
+  const data=snapshot.val();
+  if(data.to===userID && !currentCallID){
+    if(confirm(data.from+' vous appelle, acceptez ?')){
+      document.getElementById('callArea').style.display='flex';
+      currentCallID=snapshot.key;
+      localStream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});
+      localVideo.srcObject=localStream;
+      peerConnection=new RTCPeerConnection(config);
+      localStream.getTracks().forEach(track=>peerConnection.addTrack(track,localStream));
+      peerConnection.ontrack=e=>{remoteVideo.srcObject=e.streams[0];};
+      peerConnection.onicecandidate = event=>{if(event.candidate){db.ref('calls/'+currentCallID+'/candidates').push(event.candidate.toJSON());}};
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+      const answer=await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
+      db.ref('calls/'+currentCallID+'/answer').set(answer.toJSON());
+      db.ref('calls/'+currentCallID+'/candidates').on('child_added',snapshot=>peerConnection.addIceCandidate(new RTCIceCandidate(snapshot.val())));
+    } else {snapshot.ref.remove();}
+  }
 });
 
-db.ref("call/answer").on("value", async s => {
-  if (s.exists() && pc) await pc.setRemoteDescription(s.val());
-});
-
-/* CONTROLES */
-function toggleMic() {
-  micOn = !micOn;
-  localStream.getAudioTracks()[0].enabled = micOn;
-}
-
-function toggleCam() {
-  if (!localStream.getVideoTracks()[0]) return;
-  camOn = !camOn;
-  localStream.getVideoTracks()[0].enabled = camOn;
-}
-
-function hangUp() {
-  pc?.close();
-  localStream?.getTracks().forEach(t => t.stop());
-  localVideo.srcObject = null;
-  remoteVideo.srcObject = null;
-  pc = null;
-  db.ref("call").remove();
-}
+// Contrôles
+function hangUp(){if(peerConnection){peerConnection.close(); peerConnection=null;} if(localStream){localStream.getTracks().forEach(t=>t.stop()); localStream=null;} remoteVideo.srcObject=null; localVideo.srcObject=null; document.getElementById('callArea').style.display='none'; currentCallID=null;}
+function toggleMic(){if(localStream)localStream.getAudioTracks()[0].enabled=!localStream.getAudioTracks()[0].enabled;}
+function toggleCam(){if(localStream)localStream.getVideoTracks()[0].enabled=!localStream.getVideoTracks()[0].enabled;}
 </script>
-
 </body>
 </html>

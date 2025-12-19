@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Garry</title>
 
 <style>
@@ -22,38 +23,48 @@ body {
   color: var(--text);
 }
 
+/* HEADER */
 header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
+  gap: 10px;
+  padding: 12px;
   background: white;
   border-bottom: 1px solid var(--border);
 }
 
-header img {
-  height: 40px;
-}
+header img { height: 38px; }
 
+/* LAYOUT */
 #main {
   display: flex;
-  height: calc(100vh - 65px);
+  height: calc(100vh - 60px);
 }
 
 #left {
   width: 25%;
-  background: var(--card);
-  padding: 15px;
   border-right: 1px solid var(--border);
+  padding: 10px;
 }
 
 #right {
   width: 75%;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  padding: 15px;
 }
 
+/* MOBILE MODE */
+.mobile #main {
+  flex-direction: column;
+}
+
+.mobile #left,
+.mobile #right {
+  width: 100%;
+}
+
+/* CARDS */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -62,20 +73,26 @@ header img {
   margin-bottom: 10px;
 }
 
+/* CHAT */
 #messages {
   flex: 1;
   overflow-y: auto;
 }
 
 .message {
-  padding: 6px;
-  border-bottom: 1px solid var(--border);
+  padding: 8px;
+  border-bottom: 1px solid #eee;
 }
 
+.message small {
+  color: #777;
+}
+
+/* INPUTS */
 input, button {
+  width: 100%;
   padding: 10px;
   margin-top: 6px;
-  width: 100%;
   border-radius: 6px;
   border: 1px solid var(--border);
   font-size: 14px;
@@ -87,25 +104,27 @@ button {
 
 .primary { background: var(--primary); color: white; }
 .success { background: var(--success); color: white; }
-.danger  { background: var(--danger);  color: white; }
+.danger  { background: var(--danger); color: white; }
 
-.controls {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
+/* VIDEO */
 video {
   width: 49%;
   background: black;
   border-radius: 8px;
 }
 
+/* CONTROLS */
+.controls {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
 /* POPUPS */
 .popup {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.6);
+  background: rgba(0,0,0,0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,7 +151,7 @@ video {
   </div>
 </div>
 
-<!-- POPUP PSEUDO -->
+<!-- POPUP APPEL -->
 <div class="popup" id="callPopup" style="display:none">
   <div class="popupContent">
     <h3>Ton pseudo</h3>
@@ -144,6 +163,7 @@ video {
 <header>
   <img src="logo.png">
   <h2>Garry</h2>
+  <button onclick="toggleMobile()" style="margin-left:auto">📱 Mode mobile</button>
 </header>
 
 <div id="main">
@@ -155,8 +175,7 @@ video {
   </div>
 
   <div class="card">
-    <h4>Messages</h4>
-    <input id="messageInput" placeholder="Message libre">
+    <input id="messageInput" placeholder="Message global">
     <button onclick="sendMessage()">Envoyer</button>
   </div>
 </div>
@@ -184,7 +203,7 @@ video {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-// 🔥 CONFIG FIREBASE
+// 🔥 CONFIG FIREBASE (À REMPLACER)
 const firebaseConfig = {
   apiKey: "TON_API_KEY",
   authDomain: "TON_PROJET.firebaseapp.com",
@@ -198,26 +217,38 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-let pc, localStream, isVideo = true;
-let micOn = true, camOn = true;
+let pc = null;
+let localStream = null;
+let isVideo = true;
+let micOn = true;
+let camOn = true;
 
 /* BIENVENUE */
 function closeWelcome() {
   welcomePopup.style.display = "none";
 }
 
-/* CHAT */
+/* MODE MOBILE */
+function toggleMobile() {
+  document.body.classList.toggle("mobile");
+}
+
+/* CHAT GLOBAL */
 function sendMessage() {
-  if (!messageInput.value) return;
-  db.ref("messages").push({ text: messageInput.value });
+  const text = messageInput.value.trim();
+  if (!text) return;
+  db.ref("messages").push({ text, time: Date.now() });
   messageInput.value = "";
 }
 
-db.ref("messages").on("child_added", s => {
+db.ref("messages").limitToLast(200).on("child_added", snap => {
+  const msg = snap.val();
   const d = document.createElement("div");
   d.className = "message";
-  d.textContent = s.val().text;
+  d.innerHTML = `<strong>Anonyme</strong>
+    <small>${new Date(msg.time).toLocaleTimeString()}</small><br>${msg.text}`;
   messages.appendChild(d);
+  messages.scrollTop = messages.scrollHeight;
 });
 
 /* APPELS */

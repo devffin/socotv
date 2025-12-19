@@ -5,23 +5,34 @@
 <title>Garry</title>
 
 <style>
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --primary: #2196f3;
+  --danger: #e53935;
+  --success: #43a047;
+  --text: #111;
+  --border: #ddd;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #0f0f0f;
-  color: white;
+  background: var(--bg);
+  color: var(--text);
 }
 
 header {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px;
-  background: #1b1b1b;
+  padding: 12px 20px;
+  background: white;
+  border-bottom: 1px solid var(--border);
 }
 
 header img {
-  height: 45px;
+  height: 40px;
 }
 
 #main {
@@ -31,110 +42,149 @@ header img {
 
 #left {
   width: 25%;
-  background: #161616;
-  padding: 10px;
-  border-right: 1px solid #333;
+  background: var(--card);
+  padding: 15px;
+  border-right: 1px solid var(--border);
 }
 
 #right {
   width: 75%;
   display: flex;
   flex-direction: column;
+  padding: 15px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 10px;
+  margin-bottom: 10px;
 }
 
 #messages {
   flex: 1;
-  border: 1px solid #333;
-  padding: 10px;
   overflow-y: auto;
-  margin-bottom: 10px;
+}
+
+.message {
+  padding: 6px;
+  border-bottom: 1px solid var(--border);
 }
 
 input, button {
+  padding: 10px;
+  margin-top: 6px;
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  background: #222;
-  border: 1px solid #444;
-  color: white;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 14px;
 }
 
 button {
   cursor: pointer;
 }
 
-button.audio { background: #4caf50; }
-button.video { background: #2196f3; }
+.primary { background: var(--primary); color: white; }
+.success { background: var(--success); color: white; }
+.danger  { background: var(--danger);  color: white; }
+
+.controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
 
 video {
-  width: 48%;
+  width: 49%;
   background: black;
-  margin-top: 5px;
+  border-radius: 8px;
 }
 
-/* POPUP */
-#popup {
+/* POPUPS */
+.popup {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.8);
-  display: none;
+  background: rgba(0,0,0,.6);
+  display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 }
 
-#popupContent {
-  background: #1e1e1e;
+.popupContent {
+  background: white;
   padding: 20px;
-  border: 1px solid #444;
-  width: 300px;
+  border-radius: 8px;
+  width: 320px;
 }
 </style>
 </head>
 
 <body>
 
+<!-- POPUP BIENVENUE -->
+<div class="popup" id="welcomePopup">
+  <div class="popupContent">
+    <h2>SOCO TV 2 devient Garry</h2>
+    <p>Une messagerie made by SOCO</p>
+    <button class="primary" onclick="closeWelcome()">Continuer</button>
+  </div>
+</div>
+
+<!-- POPUP PSEUDO -->
+<div class="popup" id="callPopup" style="display:none">
+  <div class="popupContent">
+    <h3>Ton pseudo</h3>
+    <input id="pseudoInput" placeholder="Pseudo">
+    <button class="primary" onclick="confirmCall()">Démarrer l’appel</button>
+  </div>
+</div>
+
 <header>
-  <img src="logo.png" alt="Garry">
+  <img src="logo.png">
   <h2>Garry</h2>
 </header>
 
 <div id="main">
 
 <div id="left">
-  <h3>Appels</h3>
-  <button class="audio" onclick="openPopup(false)">📞 Appel audio</button>
-  <button class="video" onclick="openPopup(true)">🎥 Appel vidéo</button>
+  <div class="card">
+    <button class="success" onclick="openCallPopup(true)">🎥 Appel vidéo</button>
+    <button class="success" onclick="openCallPopup(false)">📞 Appel audio</button>
+  </div>
+
+  <div class="card">
+    <h4>Messages</h4>
+    <input id="messageInput" placeholder="Message libre">
+    <button onclick="sendMessage()">Envoyer</button>
+  </div>
 </div>
 
 <div id="right">
-  <div id="messages"></div>
-  <input id="messageInput" placeholder="Message (sans connexion)">
-  <button onclick="sendMessage()">Envoyer</button>
+  <div class="card" id="messages"></div>
 
-  <div style="display:flex; gap:5px;">
-    <video id="localVideo" autoplay muted></video>
-    <video id="remoteVideo" autoplay></video>
+  <div class="card">
+    <div style="display:flex; gap:6px">
+      <video id="localVideo" autoplay muted></video>
+      <video id="remoteVideo" autoplay></video>
+    </div>
+
+    <div class="controls">
+      <button onclick="toggleMic()">🎤 Micro</button>
+      <button onclick="toggleCam()">🎥 Caméra</button>
+      <button class="danger" onclick="hangUp()">⛔ Raccrocher</button>
+    </div>
   </div>
 </div>
 
 </div>
 
-<!-- POPUP LOGIN -->
-<div id="popup">
-  <div id="popupContent">
-    <h3>Entrer ton pseudo</h3>
-    <input id="pseudoInput" placeholder="Pseudo">
-    <button onclick="confirmCall()">Confirmer</button>
-  </div>
-</div>
-
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-// 🔥 CONFIG FIREBASE (À REMPLACER)
+// 🔥 CONFIG FIREBASE
 const firebaseConfig = {
   apiKey: "TON_API_KEY",
   authDomain: "TON_PROJET.firebaseapp.com",
@@ -148,49 +198,42 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-let pc = null;
-let localStream = null;
-let pseudo = "";
-let callWithVideo = false;
+let pc, localStream, isVideo = true;
+let micOn = true, camOn = true;
 
-const messagesRef = db.ref("messages");
+/* BIENVENUE */
+function closeWelcome() {
+  welcomePopup.style.display = "none";
+}
 
-// 💬 CHAT SANS CONNEXION
+/* CHAT */
 function sendMessage() {
-  const text = messageInput.value;
-  if (!text) return;
-  messagesRef.push({ text });
+  if (!messageInput.value) return;
+  db.ref("messages").push({ text: messageInput.value });
   messageInput.value = "";
 }
 
-messagesRef.on("child_added", snap => {
-  const div = document.createElement("div");
-  div.textContent = snap.val().text;
-  messages.appendChild(div);
+db.ref("messages").on("child_added", s => {
+  const d = document.createElement("div");
+  d.className = "message";
+  d.textContent = s.val().text;
+  messages.appendChild(d);
 });
 
-// 📞 POPUP
-function openPopup(video) {
-  callWithVideo = video;
-  popup.style.display = "flex";
+/* APPELS */
+function openCallPopup(video) {
+  isVideo = video;
+  callPopup.style.display = "flex";
 }
 
 function confirmCall() {
-  pseudo = pseudoInput.value;
-  if (!pseudo) return alert("Pseudo requis");
-  popup.style.display = "none";
-  startCall(callWithVideo);
+  callPopup.style.display = "none";
+  startCall();
 }
 
-// 🎥📞 WEBRTC
-async function startCall(video) {
+async function startCall() {
   pc = new RTCPeerConnection();
-
-  localStream = await navigator.mediaDevices.getUserMedia({
-    audio: true,
-    video: video
-  });
-
+  localStream = await navigator.mediaDevices.getUserMedia({ audio:true, video:isVideo });
   localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
   localVideo.srcObject = localStream;
 
@@ -198,30 +241,49 @@ async function startCall(video) {
 
   const offer = await pc.createOffer();
   await pc.setLocalDescription(offer);
-  db.ref("call").set({ offer, pseudo });
+  db.ref("call").set({ offer });
 }
 
-db.ref("call").on("value", async snap => {
-  if (!snap.exists() || pc) return;
+db.ref("call").on("value", async s => {
+  if (!s.exists() || pc) return;
 
   pc = new RTCPeerConnection();
   pc.ontrack = e => remoteVideo.srcObject = e.streams[0];
 
-  localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+  localStream = await navigator.mediaDevices.getUserMedia({ audio:true, video:true });
   localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
   localVideo.srcObject = localStream;
 
-  await pc.setRemoteDescription(snap.val().offer);
+  await pc.setRemoteDescription(s.val().offer);
   const answer = await pc.createAnswer();
   await pc.setLocalDescription(answer);
   db.ref("call/answer").set(answer);
 });
 
-db.ref("call/answer").on("value", async snap => {
-  if (snap.exists() && pc) {
-    await pc.setRemoteDescription(snap.val());
-  }
+db.ref("call/answer").on("value", async s => {
+  if (s.exists() && pc) await pc.setRemoteDescription(s.val());
 });
+
+/* CONTROLES */
+function toggleMic() {
+  micOn = !micOn;
+  localStream.getAudioTracks()[0].enabled = micOn;
+}
+
+function toggleCam() {
+  if (!localStream.getVideoTracks()[0]) return;
+  camOn = !camOn;
+  localStream.getVideoTracks()[0].enabled = camOn;
+}
+
+function hangUp() {
+  pc?.close();
+  localStream?.getTracks().forEach(t => t.stop());
+  localVideo.srcObject = null;
+  remoteVideo.srcObject = null;
+  pc = null;
+  db.ref("call").remove();
+}
 </script>
 
 </body>

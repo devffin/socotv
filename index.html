@@ -28,8 +28,8 @@ button:hover{background:#0056b3;}
 <div id="main">
   <img src="logo.png" id="logo" alt="Logo SOCO TV 2">
 
-<p>Garry (expérimental) a fermé sur ce site pour relaisser la place à SOCO TV 2.</p>
-<p>Merci de votre compréhension.</p>
+  <p>Retrouvez Garry en cliquant <a href="https://devffin.github.io/garry">ici</a>.</p>
+  <p>Le site de SOCO TV 2 risque de bientôt fermer.</p>
 
   <button id="mobileBtn" onclick="enableMobile()">Mode Mobile</button>
 </div>
@@ -40,33 +40,7 @@ if(!userID){userID=crypto.randomUUID(); localStorage.setItem('garryID',userID);}
 let pseudo=localStorage.getItem('garryPseudo')||'Garry'+userID.slice(0,4);
 document.getElementById('pseudoInput').value=pseudo;
 
-function closePopup(){
-  pseudo=document.getElementById('pseudoInput').value||pseudo;
-  localStorage.setItem('garryPseudo',pseudo);
-  document.getElementById('popup').style.display='none';
-  init();
-}
-
 function enableMobile(){document.body.style.width='360px';document.body.style.margin='auto';}
-
-// Firebase Config
-const firebaseConfig={
-  apiKey:"TON_API_KEY",
-  authDomain:"TON_PROJET.firebaseapp.com",
-  databaseURL:"https://TON_PROJET.firebaseio.com",
-  projectId:"TON_PROJET",
-  storageBucket:"TON_PROJET.appspot.com",
-  messagingSenderId:"ID",
-  appId:"APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const db=firebase.database();
-
-let localStream, peerConnection;
-const config={iceServers:[{urls:'stun:stun.l.google.com:19302'}]};
-const localVideo=document.getElementById('localVideo');
-const remoteVideo=document.getElementById('remoteVideo');
-let currentCallID=null;
 
 function init(){
   const usersRef=db.ref('users');

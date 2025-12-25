@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetrix</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #333;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        canvas {
+            background-color: #000;
+            margin-top: 20px;
+            transition: all 0.5s;
+        }
+        .neon {
+            box-shadow: 0 0 10px #ff1a75, 0 0 20px #ff1a75, 0 0 30px #ff1a75, 0 0 40px #ff1a75, 
+                        0 0 50px #ff1a75, 0 0 60px #ff1a75, 0 0 70px #ff1a75;
+            border: 2px solid #ff1a75;
+            animation: neonGlow 1.5s infinite linear;
+        }
+        @keyframes neonGlow {
+            0% { box-shadow: 0 0 10px #ff1a75, 0 0 20px #ff1a75; }
+            50% { box-shadow: 0 0 30px #ff6f91, 0 0 40px #ff6f91; }
+            100% { box-shadow: 0 0 10px #ff1a75, 0 0 20px #ff1a75; }
+        }
+        #scoreDisplay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5em;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #menu, #settings, #gameOver {
+            position: absolute;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2;
+        }
+        .button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #555;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div id="menu">
+    <img src="logo.png" alt="MegaBlocks Logo" style="max-width: 200px; margin-bottom: 20px;" />
+    <button class="button" onclick="startGame()">Démarrer le jeu</button>
+    <button class="button" onclick="openSettings()">Paramètres</button>
+</div>
+
+<div id="settings" style="display: none;">
+    <button class="button" onclick="toggleSound()">Son : <span id="sound-status">Activé</span></button>
+    <button class="button" onclick="closeSettings()">Retour</button>
+</div>
+
+<div id="gameOver" style="display: none;">
+    <h2>Game Over</h2>
+    <p>Score : <span id="finalScore">0</span></p>
+    <button class="button" onclick="restartGame()">Rejouer</button>
+    <button class="button" onclick="goToMenu()">Retourner au menu</button>
+</div>
+
+<div id="scoreDisplay">Score : 0</div>
+
+<canvas id="gameCanvas" width="300" height="600"></canvas>
+
+<script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const rows = 20;
+    const cols = 10;
+    const grid = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+    const shapes = [
+        [[1, 1, 1, 1]], // Ligne
+        [[1, 1], [1, 1]], // Carré
+        [[0, 1, 0], [1, 1, 1]], // T
+        [[1, 1, 0], [0, 1, 1]], // Z
+        [[0, 1, 1], [1, 1, 0]]  // S
+    ];
+
+    const colors = ["red", "blue", "yellow", "green"];
+    let currentPiece, nextPiece;
+    let score = 0;
+    let isSoundEnabled = true;
+    let isGameOver = false;
+    let gameAudio = new Audio("https://opengameart.org/sites/default/files/level_y.wav");
+    let menuAudio = new Audio("https://opengameart.org/sites/default/files/TremLoadingloopl.wav");
+    let clickSound = new Audio("https://opengameart.org/sites/default/files/Blip_Select.ogg");
+    let sadHorn = new Audio("https://opengameart.org/sites/default/files/sad_horn.mp3");
+
+    menuAudio.loop = true;
+    gameAudio.loop = true;
+
+    function playClickSound() {
+        if (isSoundEnabled) clickSound.play();
+    }
+
+    function toggleSound() {
+        isSoundEnabled = !isSoundEnabled;
+        document.getElementById("sound-status").textContent = isSoundEnabled ? "Activé" : "Désactivé";
+        if (!isSoundEnabled) {
+            menuAudio.pause();
+            gameAudio.pause();
+        } else {
+            menuAudio.play();
+        }
+        playClickSound();
+    }
+
+    function openSettings() {
+        document.getElementById("menu").style.display = "none";
+        document.getElementById("settings").style.display = "flex";
+        playClickSound();
+    }
+
+    function closeSettings() {
+        document.getElementById("menu").style.display = "flex";
+        document.getElementById("settings").style.display = "none";
+        playClickSound();
+    }
+
+    function startGame() {
+        document.getElementById("menu").style.display = "none";
+        resetGame();
+        spawnPiece();
+        if (isSoundEnabled && gameAudio.paused) { // Éviter de redémarrer la musique si elle joue déjà
+            menuAudio.pause();
+            gameAudio.currentTime = 0; // Remet à zéro le temps si besoin
+            gameAudio.play();
+        }
+        lastTime = 0;
+        dropCounter = 0;
+        dropInterval = 1000;
+        update();
+    }
+
+    function resetGame() {
+        grid.forEach(row => row.fill(0));
+        score = 0;
+        updateScoreDisplay();
+        isGameOver = false;
+        document.getElementById("gameOver").style.display = "none";
+        canvas.classList.remove("neon"); // Retire le mode néon en cas de redémarrage
+    }
+
+    let lastTime = 0;
+    let dropCounter = 0;
+    let dropInterval = 1000;
+
+    function update(time = 0) {
+        if (isGameOver) return;
+
+        const deltaTime = time - lastTime;
+        lastTime = time;
+
+        dropCounter += deltaTime;
+        if (dropCounter > dropInterval) {
+            movePiece(0, 1);
+            dropCounter = 0;
+        }
+
+        drawGrid();
+        requestAnimationFrame(update);
+    }
+
+    function getRandomPiece() {
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        return { shape, color, x: Math.floor(cols / 2) - 1, y: 0 };
+    }
+
+    function spawnPiece() {
+        currentPiece = nextPiece || getRandomPiece();
+        nextPiece = getRandomPiece();
+        if (collides(currentPiece)) {
+            endGame();
+        }
+    }
+
+    function drawGrid() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+                if (grid[y][x]) {
+                    ctx.fillStyle = grid[y][x];
+                    ctx.fillRect(x * 30, y * 30, 30, 30);
+                }
+            }
+        }
+
+        if (currentPiece) {
+            currentPiece.shape.forEach((row, y) => {
+                row.forEach((cell, x) => {
+                    if (cell) {
+                        ctx.fillStyle = currentPiece.color;
+                        ctx.fillRect((currentPiece.x + x) * 30, (currentPiece.y + y) * 30, 30, 30);
+                    }
+                });
+            });
+        }
+    }
+
+    function movePiece(offsetX, offsetY) {
+        currentPiece.x += offsetX;
+        currentPiece.y += offsetY;
+        if (collides(currentPiece)) {
+            currentPiece.x -= offsetX;
+            currentPiece.y -= offsetY;
+            if (offsetY > 0) {
+                mergePiece();
+                spawnPiece();
+            }
+        }
+    }
+
+    function collides(piece) {
+        return piece.shape.some((row, y) =>
+            row.some((cell, x) => cell && (
+                piece.y + y >= rows ||
+                piece.x + x < 0 ||
+                piece.x + x >= cols ||
+                grid[piece.y + y][piece.x + x]
+            ))
+        );
+    }
+
+    function mergePiece() {
+        currentPiece.shape.forEach((row, y) => {
+            row.forEach((cell, x) => {
+                if (cell) {
+                    grid[currentPiece.y + y][currentPiece.x + x] = currentPiece.color;
+                }
+            });
+        });
+        score += 10;
+        updateScoreDisplay();
+        if (score >= 50 && !canvas.classList.contains("neon")) {
+            canvas.classList.add("neon");
+        }
+        clearLines();
+    }
+
+    function clearLines() {
+        grid.forEach((row, y) => {
+            if (row.every(cell => cell !== 0)) {
+                grid.splice(y, 1);
+                grid.unshift(Array(cols).fill(0));
+                score += 10;
+                updateScoreDisplay();
+            }
+        });
+    }
+
+    function updateScoreDisplay() {
+        document.getElementById("scoreDisplay").textContent = "Score : " + score;
+    }
+
+    function endGame() {
+        isGameOver = true;
+        document.getElementById("gameOver").style.display = "flex";
+        document.getElementById("finalScore").textContent = score;
+        if (isSoundEnabled) sadHorn.play();
+        gameAudio.pause();
+    }
+
+    function restartGame() {
+        if (isSoundEnabled) {
+            sadHorn.pause();
+            sadHorn.currentTime = 0;
+        }
+        startGame();
+    }
+
+    function goToMenu() {
+        document.getElementById("gameOver").style.display = "none";
+        document.getElementById("menu").style.display = "flex";
+        if (isSoundEnabled) {
+            gameAudio.pause();
+            gameAudio.currentTime = 0;
+        }
+        sadHorn.pause();
+        sadHorn.currentTime = 0;
+    }
+
+    window.addEventListener("keydown", (event) => {
+        if (isGameOver) return;
+        if (event.key === "ArrowLeft") movePiece(-1, 0);
+        if (event.key === "ArrowRight") movePiece(1, 0);
+        if (event.key === "ArrowDown") movePiece(0, 1);
+        if (event.key === "ArrowUp") rotatePiece();
+    });
+
+    function rotatePiece() {
+        const rotated = {
+            ...currentPiece,
+            shape: currentPiece.shape[0].map((_, index) =>
+                currentPiece.shape.map(row => row[index]).reverse()
+            )
+        };
+        if (!collides(rotated)) {
+            currentPiece = rotated;
+        }
+    }
+</script>
+
+</body>
+</html>

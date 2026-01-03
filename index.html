@@ -1,74 +1,45 @@
-<!-- 🔒 SOCO TV – BROUILLAGE CHAÎNES UNIQUEMENT -->
+<!-- 🔒 SOCO TV – BROUILLAGE SIMPLE SANS BRUIT -->
 <style>
-/* ===== ÉTAT VERROUILLÉ ===== */
-body.locked .channel-card,
-body.locked #playerFrame,
+/* ÉTAT VERROUILLÉ : CHAÎNES + PLAYER SEULEMENT */
+body.locked .channel-card {
+  filter: blur(8px) brightness(0.65);
+  pointer-events: none;
+}
+
 body.locked iframe,
 body.locked video {
-  filter: blur(10px) brightness(0.6) contrast(0.9);
+  filter: blur(12px) brightness(0.6);
   pointer-events: none;
 }
 
-/* ===== BRUIT TV (UNIQUEMENT SUR ZONE VIDÉO) ===== */
-#tvNoise {
-  position: fixed;
-  inset: 0;
-  z-index: 9000;
-  pointer-events: none;
-  opacity: 0.25;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,0.05),
-      rgba(255,255,255,0.05) 1px,
-      transparent 1px,
-      transparent 2px
-    );
-  animation: noise 0.15s infinite;
-}
-
-@keyframes noise {
-  0% { transform: translate(0,0); }
-  25% { transform: translate(-1px,1px); }
-  50% { transform: translate(1px,-1px); }
-  75% { transform: translate(-1px,0); }
-  100% { transform: translate(0,0); }
-}
-
-/* ===== MESSAGE CANAL+ DISCRET ===== */
+/* MESSAGE DISCRET */
 #canalMsg {
   position: fixed;
-  bottom: 90px;
+  bottom: 80px;
   right: 20px;
-  z-index: 9001;
+  z-index: 50;
   font-family: monospace;
+  font-size: 0.85rem;
   background: rgba(0,0,0,0.6);
   color: white;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: 8px;
-  font-size: 0.85rem;
-  animation: blink 1.6s infinite;
 }
 
-@keyframes blink {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-/* ===== PANEL CODE ===== */
+/* SAISIE CODE DISCRÈTE */
 #codePanel {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 9002;
-  background: rgba(0,0,0,0.75);
+  z-index: 51;
+  background: rgba(0,0,0,0.7);
   backdrop-filter: blur(8px);
-  padding: 14px;
+  padding: 12px;
   border-radius: 12px;
 }
 
 #codePanel input {
-  width: 140px;
+  width: 130px;
   padding: 8px;
   border-radius: 8px;
   border: none;
@@ -88,11 +59,7 @@ body.locked video {
 }
 </style>
 
-<div id="tvNoise"></div>
-
-<div id="canalMsg">
-  CHAÎNE CRYPTÉE
-</div>
+<div id="canalMsg">CHAÎNE CRYPTÉE</div>
 
 <div id="codePanel">
   <input type="password" id="socoCode" placeholder="Code">
@@ -100,13 +67,13 @@ body.locked video {
 </div>
 
 <script>
-/* ===== CODE À MODIFIER ICI ===== */
-const SOCO_SECRET_CODE = "osk2026piprp";
+/* 🔑 CODE À MODIFIER ICI */
+const SOCO_SECRET_CODE = "osk2026pripr3";
 
-/* ===== MODE BROUILLÉ ===== */
+/* MODE BROUILLÉ PAR DÉFAUT */
 document.body.classList.add("locked");
 
-/* ===== SI DÉJÀ DÉBLOQUÉ ===== */
+/* SI DÉJÀ DÉBLOQUÉ */
 if (localStorage.getItem("socoUnlocked") === "true") {
   unlockSOCO(true);
 }
@@ -116,11 +83,10 @@ function unlockSOCO(auto = false) {
   if (auto || input === SOCO_SECRET_CODE) {
     localStorage.setItem("socoUnlocked", "true");
     document.body.classList.remove("locked");
-    document.getElementById("tvNoise")?.remove();
     document.getElementById("canalMsg")?.remove();
     document.getElementById("codePanel")?.remove();
   } else {
-    alert("❌ Code incorrect. demandez au mlr.suppor105@gmail.com");
+    alert("❌ Code incorrect");
   }
 }
 </script>

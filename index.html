@@ -35,12 +35,11 @@
       overflow: hidden;
       background: rgba(255, 255, 255, 0.10);
       backdrop-filter: blur(18px) brightness(1.08);
-      -webkit-backdrop-filter: blur(18px) brightness(1.08);
       border: 1px solid rgba(255,255,255,0.22);
       box-shadow: inset 0 0 0.6px rgba(255,255,255,0.45),
                   inset 0 0 18px rgba(255,255,255,0.12),
                   0 6px 25px rgba(0,0,0,0.4);
-      border-radius: 16px;
+      border-radius: var(--radius);
     }
 
     .container {
@@ -56,8 +55,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 1.5rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--gap);
     }
 
     .brand {
@@ -71,11 +70,8 @@
     .logo {
       width: 60px;
       height: 60px;
-      background: linear-gradient(135deg, #ff4757, #ff6b7a);
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
       border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .brand-text h1 {
@@ -86,23 +82,8 @@
 
     .brand-text span {
       font-size: 0.85rem;
-      color: #a9b3c3;
+      color: var(--text-muted);
       letter-spacing: 1px;
-    }
-
-    nav a {
-      padding: 10px 18px;
-      border-radius: 12px;
-      text-decoration: none;
-      color: #a9b3c3;
-      background: rgba(255,255,255,0.1);
-      margin-left: 10px;
-    }
-
-    .cta-btn {
-      background: linear-gradient(90deg, #ff4757, #ff6b7a);
-      color: white;
-      font-weight: 700;
     }
 
     h2 {
@@ -115,7 +96,7 @@
     .channels-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
+      gap: var(--gap);
     }
 
     .channel-card {
@@ -129,7 +110,7 @@
     }
 
     .live-badge {
-      background: #ff4757;
+      background: var(--accent);
       color: white;
       padding: 4px 10px;
       border-radius: 20px;
@@ -141,40 +122,18 @@
       margin-top: 6rem;
       padding: 2rem 0;
       text-align: center;
-      color: #a9b3c3;
+      color: var(--text-muted);
       font-size: 0.9rem;
-      border-top: 1px solid rgba(255,255,255,0.15);
+      border-top: 1px solid var(--border);
     }
 
-    #playerModal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    #playerModal.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    #playerModal iframe {
-      width: 90%;
-      height: 80vh;
-      border-radius: 20px;
-    }
-
-    .closeBtn {
-      position: absolute;
-      top: 30px;
-      right: 40px;
-      font-size: 40px;
-      color: white;
-      cursor: pointer;
+    .russian-warning {
+      margin-top: 4rem;
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      opacity: 0.25;
+      letter-spacing: 1px;
     }
   </style>
 </head>
@@ -183,62 +142,67 @@
 
 <div class="container">
 
-  <header class="liquid-glass">
-    <a href="index.html" class="brand">
-      <div class="logo"></div>
-      <div class="brand-text">
-        <h1>Yotvin TV B</h1>
-        <span>NOUVELLE GÉNÉRATION</span>
-      </div>
-    </a>
-  </header>
-
-  <main>
-    <h2>Découvrez nos 24 chaînes</h2>
-
-    <div class="channels-grid">
-
-      <div class="channel-card liquid-glass" onclick="openModal('echo')">
-        <div class="live-badge">LIVE</div>
-        <h3>Canal 1</h3>
-        <div class="channel-id">echo</div>
-      </div>
-
-      <div class="channel-card liquid-glass" onclick="openModal('Chaîne sans canal...')">
-        <div class="live-badge">LIVE</div>
-        <h3>Canal 23</h3>
-        <div class="channel-id">Chaîne sans canal...</div>
-      </div>
-
+<header class="liquid-glass">
+  <a class="brand">
+    <div class="logo"></div>
+    <div class="brand-text">
+      <h1>Yotvin TV B</h1>
+      <span>NOUVELLE GÉNÉRATION</span>
     </div>
-  </main>
+  </a>
+</header>
 
-  <footer class="liquid-glass">
-    © 2025 Yotvin TV B — Groupe Yotvin Safo<br>
-    Safo Player, Safo TV et Yotvin TV B sont des marques de Safo.<br>
-    Le Safo Player est une technologie de devffin.
-  </footer>
+<main>
+  <h2>Découvrez nos 24 chaînes</h2>
 
+  <div class="channels-grid">
+
+    <div class="channel-card liquid-glass"><div class="live-badge">LIVE</div><h3>Canal 1</h3><div>echo</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 2</h3><div>Bientôt disponible</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 3</h3><div>projet de rachat de nexttv</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 4</h3><div>Bientôt...</div></div>
+    <div class="channel-card liquid-glass"><div class="live-badge">LIVE</div><h3>Canal 5</h3><div>nexttv</div></div>
+    <div class="channel-card liquid-glass"><div class="live-badge">LIVE</div><h3>Canal 6</h3><div>AIRBENZTV</div></div>
+
+    <div class="channel-card liquid-glass disabled"><h3>Canal 7</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 8</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 9</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 10</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 11</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 12</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 13</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 14</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 15</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 16</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 17</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 18</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 19</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 20</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 21</h3><div>Bientôt…</div></div>
+    <div class="channel-card liquid-glass disabled"><h3>Canal 22</h3><div>Bientôt…</div></div>
+
+    <div class="channel-card liquid-glass">
+      <div class="live-badge">LIVE</div>
+      <h3>Canal 23</h3>
+      <div>Chaîne sans canal...</div>
+    </div>
+
+    <div class="channel-card liquid-glass disabled"><h3>Canal 24</h3><div>Bientôt…</div></div>
+
+  </div>
+</main>
+
+<footer class="liquid-glass">
+  © 2025 Yotvin TV B — Groupe Yotvin Safo<br>
+  Safo Player, Safo TV et Yotvin TV B sont des marques de Safo.<br>
+  Le Safo Player est une technologie de devffin.
+</footer>
+
+<!-- MESSAGE RUSSE TOUT EN BAS -->
+<div class="russian-warning">
+  если вам удалось начать трансляцию, они вас найдут
 </div>
 
-<div id="playerModal">
-  <div class="closeBtn" onclick="closeModal()">×</div>
-  <iframe id="playerFrame"></iframe>
 </div>
-
-<script>
-  const channels = ['echo', 'nexttv', 'AIRBENZTV', 'Chaîne sans canal...'];
-
-  function openModal(id) {
-    document.getElementById('playerFrame').src = `watch.html?id=${id}`;
-    document.getElementById('playerModal').classList.add('show');
-  }
-
-  function closeModal() {
-    document.getElementById('playerModal').classList.remove('show');
-    document.getElementById('playerFrame').src = '';
-  }
-</script>
-
 </body>
 </html>

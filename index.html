@@ -1,93 +1,244 @@
-<!-- 🔒 SOCO TV – BROUILLAGE SIMPLE SANS BRUIT -->
-<style>
-/* ÉTAT VERROUILLÉ : CHAÎNES + PLAYER SEULEMENT */
-body.locked .channel-card {
-  filter: blur(8px) brightness(0.65);
-  pointer-events: none;
-}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yotvin TV B • La nouvelle génération TV</title>
 
-body.locked iframe,
-body.locked video {
-  filter: blur(12px) brightness(0.6);
-  pointer-events: none;
-}
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
-/* MESSAGE DISCRET */
-#canalMsg {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  z-index: 50;
-  font-family: monospace;
-  font-size: 0.85rem;
-  background: rgba(0,0,0,0.6);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-}
+  <style>
+    :root {
+      --accent: #ff4757;
+      --accent2: #ff6b7a;
+      --text-muted: #a9b3c3;
+      --radius: 16px;
+      --gap: 24px;
+      --border: rgba(255,255,255,0.15);
+      --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-/* SAISIE CODE DISCRÈTE */
-#codePanel {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 51;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(8px);
-  padding: 12px;
-  border-radius: 12px;
-}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-#codePanel input {
-  width: 130px;
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  text-align: center;
-}
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0d0d10, #1a1f27, #10131a);
+      background-attachment: fixed;
+      color: #e3e3e3;
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-#codePanel button {
-  margin-left: 6px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-  background: #ff4757;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-</style>
+    .liquid-glass {
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(18px) brightness(1.08);
+      -webkit-backdrop-filter: blur(18px) brightness(1.08);
+      border: 1px solid rgba(255,255,255,0.22);
+      box-shadow: inset 0 0 0.6px rgba(255,255,255,0.45),
+                  inset 0 0 18px rgba(255,255,255,0.12),
+                  0 6px 25px rgba(0,0,0,0.4);
+      border-radius: 16px;
+    }
 
-<div id="canalMsg">CHAÎNE CRYPTÉE</div>
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
 
-<div id="codePanel">
-  <input type="password" id="socoCode" placeholder="Code">
-  <button onclick="unlockSOCO()">OK</button>
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #ff4757, #ff6b7a);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-text h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .brand-text span {
+      font-size: 0.85rem;
+      color: #a9b3c3;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      padding: 10px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #a9b3c3;
+      background: rgba(255,255,255,0.1);
+      margin-left: 10px;
+    }
+
+    .cta-btn {
+      background: linear-gradient(90deg, #ff4757, #ff6b7a);
+      color: white;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.6rem;
+      text-align: center;
+      margin: 3rem 0 2rem;
+    }
+
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .channel-card {
+      padding: 1.5rem;
+      cursor: pointer;
+    }
+
+    .channel-card.disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .live-badge {
+      background: #ff4757;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    footer {
+      margin-top: 6rem;
+      padding: 2rem 0;
+      text-align: center;
+      color: #a9b3c3;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+
+    #playerModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #playerModal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #playerModal iframe {
+      width: 90%;
+      height: 80vh;
+      border-radius: 20px;
+    }
+
+    .closeBtn {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <header class="liquid-glass">
+    <a href="index.html" class="brand">
+      <div class="logo"></div>
+      <div class="brand-text">
+        <h1>Yotvin TV B</h1>
+        <span>NOUVELLE GÉNÉRATION</span>
+      </div>
+    </a>
+  </header>
+
+  <main>
+    <h2>Découvrez nos 24 chaînes</h2>
+
+    <div class="channels-grid">
+
+      <div class="channel-card liquid-glass" onclick="openModal('echo')">
+        <div class="live-badge">LIVE</div>
+        <h3>Canal 1</h3>
+        <div class="channel-id">echo</div>
+      </div>
+
+      <div class="channel-card liquid-glass" onclick="openModal('Chaîne sans canal...')">
+        <div class="live-badge">LIVE</div>
+        <h3>Canal 23</h3>
+        <div class="channel-id">Chaîne sans canal...</div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="liquid-glass">
+    © 2025 Yotvin TV B — Groupe Yotvin Safo<br>
+    Safo Player, Safo TV et Yotvin TV B sont des marques de Safo.<br>
+    Le Safo Player est une technologie de devffin.
+  </footer>
+
+</div>
+
+<div id="playerModal">
+  <div class="closeBtn" onclick="closeModal()">×</div>
+  <iframe id="playerFrame"></iframe>
 </div>
 
 <script>
-/* 🔑 CODE À MODIFIER ICI */
-const SOCO_SECRET_CODE = "osk2026pripr3";
+  const channels = ['echo', 'nexttv', 'AIRBENZTV', 'Chaîne sans canal...'];
 
-/* MODE BROUILLÉ PAR DÉFAUT */
-document.body.classList.add("locked");
-
-/* SI DÉJÀ DÉBLOQUÉ */
-if (localStorage.getItem("socoUnlocked") === "true") {
-  unlockSOCO(true);
-}
-
-function unlockSOCO(auto = false) {
-  const input = document.getElementById("socoCode")?.value;
-  if (auto || input === SOCO_SECRET_CODE) {
-    localStorage.setItem("socoUnlocked", "true");
-    document.body.classList.remove("locked");
-    document.getElementById("canalMsg")?.remove();
-    document.getElementById("codePanel")?.remove();
-  } else {
-    alert("❌ Code incorrect");
+  function openModal(id) {
+    document.getElementById('playerFrame').src = `watch.html?id=${id}`;
+    document.getElementById('playerModal').classList.add('show');
   }
-}
+
+  function closeModal() {
+    document.getElementById('playerModal').classList.remove('show');
+    document.getElementById('playerFrame').src = '';
+  }
 </script>
-<!-- 🔓 FIN -->
+
+</body>
+</html>

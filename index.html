@@ -1,276 +1,99 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Fin de SOCO TV 2</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Hébergement expiré</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #2c2c2c, #3a3a3a);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
 
-<style>
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            right: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-body{
-margin:0;
-font-family:Arial, Helvetica, sans-serif;
-color:white;
-background:linear-gradient(135deg,#0a2a66,#0d4bd4,#4aa3ff);
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding-top:40px;
-}
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-/* BANNIERE */
+        .logo span {
+            color: #00bfff;
+        }
 
-.banner{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:40px;
-background:#ff4444;
-display:flex;
-align-items:center;
-overflow:hidden;
-z-index:1000;
-}
+        .socotv {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff3b3b;
+        }
 
-.banner-text{
-white-space:nowrap;
-padding-left:100%;
-animation:scrollText 20s linear infinite;
-font-weight:bold;
-}
+        .container {
+            max-width: 600px;
+        }
 
-@keyframes scrollText{
-0%{transform:translateX(0);}
-100%{transform:translateX(-100%);}
-}
+        img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
 
-/* Animation breaking */
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
 
-.breaking{
-background:#000;
-animation:flash 0.6s infinite alternate;
-}
+        p {
+            color: #cccccc;
+            font-size: 16px;
+            line-height: 1.5;
+        }
 
-@keyframes flash{
-from{background:#ff0000;}
-to{background:#000;}
-}
-
-.container{
-max-width:1200px;
-width:90%;
-display:flex;
-justify-content:space-between;
-gap:60px;
-padding:50px 0;
-}
-
-.text{
-max-width:620px;
-}
-
-h1{
-font-size:46px;
-margin-bottom:15px;
-}
-
-.subtitle{
-opacity:0.85;
-margin-bottom:30px;
-}
-
-.soco{
-color:#7fd3ff;
-font-weight:bold;
-}
-
-.card{
-background:rgba(0,0,0,0.35);
-padding:20px;
-border-radius:10px;
-margin-bottom:20px;
-line-height:1.6;
-}
-
-.quote-box{
-max-width:350px;
-}
-
-.quote{
-font-size:28px;
-font-style:italic;
-}
-
-.quote::before,.quote::after{
-font-family:Georgia,"Times New Roman",serif;
-color:rgba(255,255,255,0.6);
-font-size:60px;
-}
-
-.quote::before{
-content:"“";
-display:block;
-}
-
-.quote::after{
-content:"”";
-display:block;
-text-align:right;
-}
-
-.author{
-margin-top:10px;
-font-size:16px;
-opacity:0.8;
-text-align:right;
-}
-
-button{
-background:#ff4444;
-border:none;
-padding:12px 20px;
-color:white;
-font-size:16px;
-border-radius:8px;
-cursor:pointer;
-}
-
-button:hover{
-background:#ff2222;
-}
-
-.hidden{
-display:none;
-}
-
-footer{
-position:fixed;
-bottom:10px;
-width:100%;
-text-align:center;
-font-size:14px;
-opacity:0.8;
-}
-
-</style>
+        .footer {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #888;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- BANNIERE -->
-<div class="banner" id="banner">
-<div class="banner-text" id="bannerText">
-Annonce officielle • A partir du 20 mars à 23h le site de SOCO TV 2 ne sera plus hébergé • Merci de votre compréhension
-</div>
-</div>
+    <div class="header">
+        <div class="logo">devffin <span>Sites</span></div>
+        <div class="socotv">SOCOTV</div>
+    </div>
 
-<div class="container">
+    <div class="container">
+        <img src="https://cdni.iconscout.com/illustration/premium/thumb/cable-debranche-illustration-svg-download-png-10820192.png" alt="Câbles débranchés">
+        
+        <h1>Hébergement expiré</h1>
+        
+        <p>
+            Ce site web n'est actuellement plus accessible.<br>
+            L'hébergement associé à ce domaine a expiré ou a été suspendu.
+        </p>
 
-<div class="text">
+        <p>
+            Si vous êtes le propriétaire du site, veuillez contacter votre fournisseur d’hébergement
+            pour réactiver votre service.
+        </p>
 
-<h1>Fin de <span class="soco">SOCO TV 2</span></h1>
-<p class="subtitle">Annonce officielle</p>
-
-<div id="part1">
-
-<div class="card">
-<p>
-<span class="soco">SOCO TV 2</span> était une plateforme permettant d’héberger plusieurs chaînes et de
-diffuser leurs contenus au même endroit.
-</p>
-</div>
-
-<div class="card">
-<p>
-Au fil du temps, la plateforme <span class="soco">SOCO TV 2</span> a accueilli plusieurs chaînes
-et une communauté de spectateurs fidèles.
-</p>
-</div>
-
-</div>
-
-<div id="part2" class="hidden">
-
-<div class="card">
-<p>
-Cependant, en raison d’un manque de mises à jour et d’évolution technique,
-l’hébergeur de <span class="soco">SOCO TV 2</span> a décidé de mettre fin à l’hébergement.
-</p>
-</div>
-
-<div class="card">
-<p>
-Cette décision entraîne la fermeture du site et l’arrêt du service.
-</p>
-</div>
-
-<div class="card">
-<p>
-Nous remercions tous les créateurs et spectateurs
-qui ont participé à l’aventure <span class="soco">SOCO TV 2</span>.
-</p>
-</div>
-
-</div>
-
-<button onclick="toggleText()" id="btn">Lire la suite</button>
-
-</div>
-
-<div class="quote-box">
-<div class="quote">
-Chaque plateforme a une fin, mais les projets continuent ailleurs.
-</div>
-<div class="author">
-— ChatGPT
-</div>
-</div>
-
-</div>
-
-<footer>
-<span class="soco">SOCO TV 2</span> • Groupe Yotvin SAFO
-</footer>
-
-<script>
-
-/* bouton lire la suite */
-
-function toggleText(){
-
-const part1=document.getElementById("part1");
-const part2=document.getElementById("part2");
-const btn=document.getElementById("btn");
-
-if(part2.classList.contains("hidden")){
-part1.style.display="none";
-part2.classList.remove("hidden");
-btn.textContent="Retour au début";
-}else{
-part1.style.display="block";
-part2.classList.add("hidden");
-btn.textContent="Lire la suite";
-}
-
-}
-
-/* Animation breaking news */
-
-setTimeout(function(){
-
-const banner=document.getElementById("banner");
-const bannerText=document.getElementById("bannerText");
-
-banner.classList.add("breaking");
-
-bannerText.innerHTML=
-"BREAKING NEWS • Fermeture officielle de SOCO TV 2 • L'hébergeur met fin au service • Les chaînes n'auront pas besoin de migrer et seront sur Yoko • Merci à la communauté";
-
-},8000);
-
-</script>
+        <div class="footer">
+            Code erreur : HOSTING_EXPIRED
+        </div>
+    </div>
 
 </body>
 </html>
